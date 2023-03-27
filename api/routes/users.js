@@ -14,8 +14,16 @@ const db = knex({
     }
 });  
 
-// create user rdv
+// all user
 router.route('/')
+    .get(async (req, res, next) => {
+        const users = await db('User').select();
+
+        res.status(200).json(users);
+    });
+
+// create user
+router.route('/create')
     .post(async (req, res, next) => {
         await db('User').insert({
             firstname: req.body.firstname,
@@ -27,4 +35,14 @@ router.route('/')
         res.status(201).json('user ajouté');
     });
 
-module.exports = router;
+// // delete user
+// router.route('/delete/:id')
+//     .delete(async (req, res, next) => {
+//         await db('User')
+//             .where('id_user' === req.params.id)
+//             .del()
+
+//         res.status(204).json('user supprimé');
+//     });
+
+// module.exports = router;
