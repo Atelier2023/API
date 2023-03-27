@@ -1,0 +1,23 @@
+version: "3"
+
+networks:
+  docker_nodejs_bootstrap:
+    driver: bridge
+
+services:
+  api:
+    container_name: docker_nodejs_bootstrap_api
+    image: node
+    ports:
+      - "19100:3000"
+    volumes:
+      - ./api:/app
+    working_dir: /app
+    env_file:
+      - ./api/.env
+    command: bash -c 'npm i && npm start' #for npm modules installation inside container without hot reloading in dev environment
+    #command: bash -c 'npm i && npm run dev' #for npm modules installation inside container and hot reloading in dev environment (works only if nodemon is already installed in container)
+    #command: npm start #for production environment
+    #restart: unless-stopped #to activate in production environment
+    networks:
+      - docker_nodejs_bootstrap
