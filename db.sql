@@ -10,7 +10,7 @@ CREATE TABLE `RDV` (
     `address` varchar(128) NOT NULL,
     `before` bool DEFAULT false,
     `after` bool DEFAULT false,
-    `state` enum('en cours', 'à venir', 'terminé') DEFAULT 'à venir' NOT NULL,
+    `state` enum('in progress', 'coming', 'completed') DEFAULT 'coming' NOT NULL,
     `id_owner` int(11) FOREIGN KEY REFERENCES Owner(id_owner),
     `id_participant` int(11) FOREIGN KEY REFERENCES Participant(id_participant),
     PRIMARY KEY (`id_RDV`)
@@ -43,6 +43,6 @@ CREATE TABLE `Participant` (
     `firstname` varchar(128) NOT NULL,
     `tel_number` int(12) NOT NULL,
     `address` varchar(128),
-    `state` enum('en cours', 'à venir', 'terminé') DEFAULT 'à venir' NOT NULL,
-    PRIMARY KEY (`id_Owid_participantner`)
+    `state` enum('present', 'missing', 'not answered') DEFAULT 'not answered' NOT NULL,
+    PRIMARY KEY (`id_participant`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
