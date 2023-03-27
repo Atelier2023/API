@@ -14,10 +14,30 @@ services:
       - ./api:/app
     working_dir: /app
     env_file:
-      - ./api/.env
-    command: bash -c 'npm i && npm start' #for npm modules installation inside container without hot reloading in dev environment
-    #command: bash -c 'npm i && npm run dev' #for npm modules installation inside container and hot reloading in dev environment (works only if nodemon is already installed in container)
+      - api/.env
+    # command: bash -c 'npm i && npm start' #for npm modules installation inside container without hot reloading in dev environment
+    command: bash -c 'npm i && npm run dev' #for npm modules installation inside container and hot reloading in dev environment (works only if nodemon is already installed in container)
     #command: npm start #for production environment
     #restart: unless-stopped #to activate in production environment
+    networks:
+      - docker_nodejs_bootstrap
+    depends_on:
+      - db
+  
+  db:
+    image: mariadb:latest
+    container_name: docker_mariadb_bootstrap_api
+    ports:
+      - 3306:3306
+    env_file:
+      - .env
+    networks:
+      - docker_nodejs_bootstrap
+    volumes:
+      - ./data/api:/var/lib/mysql
+  adminer:
+    image: adminer
+    ports:
+      - 8080:8080
     networks:
       - docker_nodejs_bootstrap
