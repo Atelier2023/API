@@ -5,6 +5,9 @@ networks:
     driver: bridge
 
 services:
+
+  # -- Services --
+
   service_Events:
     container_name: docker_nodejs_bootstrap_api
     image: node
@@ -23,25 +26,6 @@ services:
       - docker_nodejs_bootstrap
     depends_on:
       - dbEvent
-  
-  dbEvent:
-    image: mariadb:latest
-    container_name: docker_mariadb_bootstrap_api
-    ports:
-      - 3306:3306
-    env_file:
-      - ./event.env
-    networks:
-      - docker_nodejs_bootstrap
-    volumes:
-      - ./data/service_Events:/var/lib/mysql
-      
-  adminer:
-    image: adminer
-    ports:
-      - 8080:8080
-    networks:
-      - docker_nodejs_bootstrap
 
   service_Users:
     container_name: docker_service_Users
@@ -62,25 +46,44 @@ services:
     depends_on:
       - dbUser
 
-  service_admin:
-    container_name: docker_service_admin
+  # service_admin:
+  #   container_name: docker_service_admin
+  #   image: node
+  #   ports:
+  #     - "19104:3000"
+  #   volumes:
+  #     - ./service_admin:/app
+  #   working_dir: /app
+  #   env_file:
+  #     - ./.env
+  #   # command: bash -c 'npm i && npm start' #for npm modules installation inside container without hot reloading in dev environment
+  #   command: bash -c 'npm i && npm run dev' #for npm modules installation inside container and hot reloading in dev environment (works only if nodemon is already installed in container)
+  #   #command: npm start #for production environment
+  #   #restart: unless-stopped #to activate in production environment
+  #   networks:
+  #     - docker_nodejs_bootstrap
+
+  service_gateway:
+    container_name: docker_service_gateway
     image: node
     ports:
-      - "19104:3000"
+      - "19106:3000"
     volumes:
-      - ./service_admin:/app
+      - ./service_gateway:/app
     working_dir: /app
-    env_file:
-      - ./.env
-    # command: bash -c 'npm i && npm start' #for npm modules installation inside container without hot reloading in dev environment
-    command: bash -c 'npm i && npm run dev' #for npm modules installation inside container and hot reloading in dev environment (works only if nodemon is already installed in container)
+    command: bash -c 'npm i && npm run dev'
     #command: npm start #for production environment
     #restart: unless-stopped #to activate in production environment
     networks:
       - docker_nodejs_bootstrap
     depends_on:
-      - dbUser
+      - service_Events
+      - service_Users
+      # - service_admin
+    
       
+# -- Database --
+
   dbUser:
     image: mariadb:latest
     container_name: docker-service_Users-mariadb
@@ -92,3 +95,22 @@ services:
       - docker_nodejs_bootstrap
     volumes:
       - ./data/service_Users:/var/lib/mysql
+
+  dbEvent:
+    image: mariadb:latest
+    container_name: docker_mariadb_bootstrap_api
+    ports:
+      - 3306:3306
+    env_file:
+      - ./event.env
+    networks:
+      - docker_nodejs_bootstrap
+    volumes:
+      - ./data/service_Events:/var/lib/mysql
+
+  adminer:
+    image: adminer
+    ports:
+      - 8080:8080
+    networks:
+      - docker_nodejs_bootstrap
