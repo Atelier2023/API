@@ -69,4 +69,4 @@ services:
     networks:
       - docker_nodejs_bootstrap
     volumes:
-      - ./data/usr:/var/lib/mysql
+      - ./data/service_Users:/var/lib/mysql
