@@ -31,9 +31,9 @@ CREATE TABLE `Participant` (
 DROP TABLE IF EXISTS `Commentaire`;
 CREATE TABLE `Commentaire` (
     `id_commentaire` int(11) NOT NULL AUTO_INCREMENT,
-    `commentaire` text() NOT NULL,
+    `commentaire` text(128) NOT NULL,
     `id_user` int(11) NOT NULL,
     `id_event` int(11) NOT NULL,
     `date` datetime NOT NULL,
-    PRIMARY KEY (`id_participant`)
+    PRIMARY KEY (`id_commentaire`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
