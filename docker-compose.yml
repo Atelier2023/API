@@ -62,6 +62,27 @@ services:
   #   #restart: unless-stopped #to activate in production environment
   #   networks:
   #     - docker_nodejs_bootstrap
+
+  service_gateway:
+    container_name: docker_service_gateway
+    image: node
+    ports:
+      - "19106:3000"
+    volumes:
+      - ./service_gateway:/app
+    working_dir: /app
+    env_file:
+      - ./.env
+    command: bash -c 'npm i && npm run dev'
+    #command: npm start #for production environment
+    #restart: unless-stopped #to activate in production environment
+    networks:
+      - docker_nodejs_bootstrap
+    depends_on:
+      - service_Events
+      - service_Users
+      # - service_admin
+    
       
 # -- Database --
 
