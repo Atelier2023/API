@@ -1,5 +1,5 @@
 {
-  "name": "api",
+  "name": "service_event",
   "version": "0.0.0",
   "private": true,
   "scripts": {
