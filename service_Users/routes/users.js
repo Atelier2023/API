@@ -12,7 +12,7 @@ const db = knex({
         password: process.env.MARIADB_PASSWORD,
         database: process.env.MARIADB_DATABASE
     }
-});  
+});
 
 // all user
 router.route('/')
