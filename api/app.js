@@ -17,7 +17,7 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.use('/events', eventRouters);
+app.use('/events', eventsRouter);
 
 // catch 404 and forward to error handler
 app.use((req, res, next) => {
