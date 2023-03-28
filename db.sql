@@ -11,7 +11,8 @@ CREATE TABLE `User` (
     `password` varchar(128) NOT NULL,
     `tel_number` int(12) NOT NULL,
     `address` varchar(128),
-    PRIMARY KEY (`id_user`)
+    PRIMARY KEY (`id_user`),
+    UNIQUE (`email`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 DROP TABLE IF EXISTS `RDV`;
