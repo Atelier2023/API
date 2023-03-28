@@ -45,4 +45,4 @@ router.route('/create')
 //         res.status(204).json('user supprimé');
 //     });
 
-// module.exports = router;
+module.exports = router;
