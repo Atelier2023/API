@@ -6,7 +6,7 @@ networks:
 
 services:
 
-# -- Services --
+  # -- Services --
 
   service_Events:
     container_name: docker_nodejs_bootstrap_api
@@ -26,6 +26,25 @@ services:
       - docker_nodejs_bootstrap
     depends_on:
       - dbEvent
+
+  dbEvent:
+    image: mariadb:latest
+    container_name: docker_mariadb_bootstrap_api
+    ports:
+      - 3306:3306
+    env_file:
+      - ./event.env
+    networks:
+      - docker_nodejs_bootstrap
+    volumes:
+      - ./data/service_Events:/var/lib/mysql
+
+  adminer:
+    image: adminer
+    ports:
+      - 8080:8080
+    networks:
+      - docker_nodejs_bootstrap
 
   service_Users:
     container_name: docker_service_Users
@@ -95,22 +114,3 @@ services:
       - docker_nodejs_bootstrap
     volumes:
       - ./data/service_Users:/var/lib/mysql
-
-  dbEvent:
-    image: mariadb:latest
-    container_name: docker_mariadb_bootstrap_api
-    ports:
-      - 3306:3306
-    env_file:
-      - ./event.env
-    networks:
-      - docker_nodejs_bootstrap
-    volumes:
-      - ./data/service_Events:/var/lib/mysql
-
-  adminer:
-    image: adminer
-    ports:
-      - 8080:8080
-    networks:
-      - docker_nodejs_bootstrap

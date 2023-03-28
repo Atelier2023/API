@@ -12,7 +12,7 @@ const db = knex({
         password: process.env.MARIADB_PASSWORD,
         database: process.env.MARIADB_DATABASE
     }
-});  
+});
 
 // all user
 router.route('/')
@@ -33,6 +33,12 @@ router.route('/create')
 
         res.status(201).json('user ajouté');
     });
+
+//TODO FAIRE UN SIGNIN QUI DONNE UN ACCESTOKEN ET UN REFRESH TOKEN LE REFRESH SERA STOCKER EN BDD
+
+//TODO FAIRE UN VALIDATE AVEC UN BEARER TOKEN POUR VERIFIER SI LE TOKEN ET VALIDE SI NON REFESH LE TOKEN
+
+//TODO FAIRE UN REFRESH QUI RECREER UN ACCES TOKEN ET UN REFRESH TOKEN LE REFREH TOKEN SERA REMPLACER PAR UN NOUVEAU
 
 // delete user
 // router.route('/delete/:id')
