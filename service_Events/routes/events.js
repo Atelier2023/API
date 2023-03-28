@@ -20,8 +20,11 @@ router.route('/')
             let result;
             if (req.query.user) {
                 const events = await db('Event')
-                    .where('id_user' === req.query.user)
-                    .groupBy('id_event');
+                    .where('id_user', req.query.user)
+                    .groupBy('id_event')
+                    .select();
+
+                console.log(events)
                 
                 const eventResult = events.map(event => {
                     return {
