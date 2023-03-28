@@ -13,44 +13,43 @@ const db = knex({
     }
 });  
 
-// Get all events
+// Get all participant
 router.route('/')
     .get(async (req, res, next) => {
         try {
             let result;
-            if (req.query.user) {
-                const events = await db('Event')
-                    .where('id_user', req.query.user)
-                    .groupBy('id_event')
+            if (req.query.event) {
+                // Get all participant by id_event
+                const participants = await db('Participant')
+                    .where('id_event', req.query.event)
                     .select();
 
-                const eventResult = events.map(event => {
+                const participantResult = participants.map(participant => {
                     return {
-                        "event": {
-                            "id_event": event.id_event,
-                            "address": event.address,
-                            "state": event.state,
-                            "before": event.before,
-                            "after": event.after,
-                            "date_event": event.date_event
+                        "participant": {
+                            "id_participant": participant.id_participant,
+                            "name": participant.name,
+                            "firstname": participant.firstname,
+                            "tel_number": participant.tel_number,
+                            "address": participant.address,
                         }
                     }
                 });
 
                 result = {
                     "type": "collection",
-                    "count": eventResult.length,
-                    "events": eventResult
+                    "count": participantResult.length,
+                    "events": participantResult
                 };
             } else {
-                result = await db('Event').select();
+                result = await db('Participant').select();
             }
 
             if (!result) {
                 res.status(404).json({
                     "type": "error",
                     "error": 404,
-                    "message": "ressource non disponible : /event"
+                    "message": "ressource non disponible : /participant"
                 });
             } else {
                 res.status(200).json(result);
@@ -64,17 +63,18 @@ router.route('/')
         }
     });
 
-//create event
+//create participant
 router.route('/create')
     .post(async (req, res, next) => {
         try {
-            await db('Event').insert({
-                id_user: req.body.id_user,
-                address: req.body.address,
-                date_event: req.body.date_event,
+            await db('Participant').insert({
+                name: req.body.name,
+                firstname: req.body.firstname,
+                tel_number: req.body.tel_number,
+                id_event: req.body.id_event,
             });
 
-            res.status(201).json('event ajouté');
+            res.status(201).json('participant ajouté');
         } catch (error) {
             res.status(500).json({
                 "type": "error",
@@ -84,11 +84,11 @@ router.route('/create')
         }
     });
 
-//get event by id
-router.route('/:id_event')
+//get all event for participant
+router.route('/:id_participant')
     .get(async (req, res, next) => {
         try {
-            const result = await db('Event')
+            const result = await db('Participant')
                 .where('id_event', req.params.id_event)
                 .select();
 
@@ -96,7 +96,7 @@ router.route('/:id_event')
                 res.status(404).json({
                     "type": "error",
                     "error": 404,
-                    "message": "ressource non disponible : /event/" + req.params.id_event
+                    "message": "ressource non disponible : /Participant/" + req.params.id_participant
                 });
             } else {
                 res.status(200).json(result);
