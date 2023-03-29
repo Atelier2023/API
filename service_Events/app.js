@@ -7,6 +7,8 @@ const helmet = require('helmet');
 const cors = require('cors');
 
 const eventsRouter = require('./routes/events');
+const commaentairesRouter = require('./routes/commentaires');
+const participantsRouter = require('./routes/participants');
 
 const app = express();
 app.use(cors());
@@ -18,6 +20,8 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/events', eventsRouter);
+app.use('/commentaires', commaentairesRouter);
+app.use('/participants', participantsRouter);
 
 // catch 404 and forward to error handler
 app.use((req, res, next) => {

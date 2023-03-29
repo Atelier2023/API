@@ -13,44 +13,42 @@ const db = knex({
     }
 });  
 
-// Get all events
+// Get all comments
 router.route('/')
     .get(async (req, res, next) => {
         try {
             let result;
             if (req.query.user) {
-                const events = await db('Event')
+                const comments = await db('Commentaire')
                     .where('id_user', req.query.user)
-                    .groupBy('id_event')
+                    .groupBy('id_commentaire')
                     .select();
 
-                const eventResult = events.map(event => {
+                const commentResult = comments.map(comment => {
                     return {
-                        "event": {
-                            "id_event": event.id_event,
-                            "address": event.address,
-                            "state": event.state,
-                            "before": event.before,
-                            "after": event.after,
-                            "date_event": event.date_event
+                        "comment": {
+                            "id_commentaire": comment.id_commentaire,
+                            "id_event": comment.id_event,
+                            "commentaire": comment.commentaire,
+                            "date": comment.date,
                         }
                     }
                 });
 
                 result = {
                     "type": "collection",
-                    "count": eventResult.length,
-                    "events": eventResult
+                    "count": commentResult.length,
+                    "comments": commentResult
                 };
             } else {
-                result = await db('Event').select();
+                result = await db('Commentaire').select();
             }
 
             if (!result) {
                 res.status(404).json({
                     "type": "error",
                     "error": 404,
-                    "message": "ressource non disponible : /event"
+                    "message": "ressource non disponible : /commentaire"
                 });
             } else {
                 res.status(200).json(result);
@@ -64,17 +62,18 @@ router.route('/')
         }
     });
 
-//create event
+//create comment
 router.route('/create')
     .post(async (req, res, next) => {
         try {
-            await db('Event').insert({
+            await db('Commentaire').insert({
+                commentaire: req.body.commentaire,
                 id_user: req.body.id_user,
-                address: req.body.address,
-                date_event: req.body.date_event,
+                id_event: req.body.id_event,
+                date: req.body.date,
             });
 
-            res.status(201).json('event ajouté');
+            res.status(201).json('commentaire ajouté');
         } catch (error) {
             res.status(500).json({
                 "type": "error",
@@ -84,19 +83,36 @@ router.route('/create')
         }
     });
 
-//get event by id
+//get all commentaires by id event
 router.route('/:id_event')
     .get(async (req, res, next) => {
         try {
-            const result = await db('Event')
+            const comments = await db('Commentaire')
                 .where('id_event', req.params.id_event)
                 .select();
+
+            const commentResult = comments.map(comment => {
+                return {
+                    "comment": {
+                        "id_commentaire": comment.id_commentaire,
+                        "id_user": comment.id_user,
+                        "commentaire": comment.commentaire,
+                        "date": comment.date,
+                    }
+                }
+            });
+
+            result = {
+                "type": "collection",
+                "count": commentResult.length,
+                "comments": commentResult
+            };
 
             if (!result) {
                 res.status(404).json({
                     "type": "error",
                     "error": 404,
-                    "message": "ressource non disponible : /event/" + req.params.id_event
+                    "message": "ressource non disponible : /commentaire/" + req.params.id_event 
                 });
             } else {
                 res.status(200).json(result);
@@ -110,43 +126,25 @@ router.route('/:id_event')
         }
     });
 
-//update event by id
-router.route('/update/:id_event')
+//update commentaires by id
+router.route('/update/:id_commentaires')
     .post(async (req, res, next) => {
         try {
-            const event = await db('Event')
-                .where('id_event', req.params.id_event)
-                .select()
-                .first();
-
-                if (!event) {
-                    res.status(404).json({
-                        "type": "error",
-                        "error": 404,
-                        "message": "ressource non disponible : /event/update/" + req.params.id_event
-                    });
-                } else {
-                    const result = await db('Event')
-                        .where('id_event', req.params.id_event)
-                        .update({
-                            date_event: req.body.date_event || event.date_event,
-                            address: req.body.address || event.address,
-                            before: req.body.before || event.before,
-                            after: req.body.after || event.after,
-                            state: req.body.after || event.state
-                        });
-
-                    if (!result) {
-                        res.status(404).json({
-                            "type": "error",
-                            "error": 404,
-                            "message": "ressource non disponible : /event/update/" + req.params.id_event
-                        });
-                    } else {
-                        res.status(200).json('event modifié.');
-                    }
-                }
-
+            const result = await db('Commentaire')
+                .where('id_event', req.params.id_commentaires)
+                .update({
+                    commentaire: req.body.commentaire
+                });
+                
+            if (!result) {
+                res.status(404).json({
+                    "type": "error",
+                    "error": 404,
+                    "message": "ressource non disponible : /commentaire/update/" + req.params.id_commentaire
+                });
+            } else {
+                res.status(200).json('commentaire modifié.');
+            }
         } catch (error) {
             res.json({
                 "type": "error",
@@ -156,19 +154,19 @@ router.route('/update/:id_event')
         }
     });
 
-//delete event by id
-router.route('/delete/:id_event')
+//delete commentaire by id
+router.route('/delete/:id_commentaire')
     .delete(async (req, res, next) => {
         try {
-            const result = await db('Event')
-                .where('id_event', req.params.id_event)
+            const result = await db('Commentaire')
+                .where('id_commentaire', req.params.id_commentaire)
                 .del();
 
             if (!result) {
                 res.status(404).json({
                     "type": "error",
                     "error": 404,
-                    "message": "ressource non disponible : /Events/delete/" + req.params.id_event
+                    "message": "ressource non disponible : /Commentaires/delete/" + req.params.id_commentaire
                 });
             } else {
                 res.status(200).json('Participant supprimé.');

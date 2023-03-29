@@ -20,10 +20,10 @@ CREATE TABLE `Participant` (
     `id_participant` int(11) NOT NULL AUTO_INCREMENT,
     `name` varchar(128) NOT NULL,
     `firstname` varchar(128) NOT NULL,
-    `tel_number` int(12) NOT NULL,
+    `tel_number` varchar(12) NOT NULL,
     `address` varchar(256),
     `state` enum('present', 'missing', 'not answered') DEFAULT 'not answered' NOT NULL,
-    `id_event` int(11),
+    `id_event` int(11) NOT NULL,
     FOREIGN KEY (`id_event`) REFERENCES Event(id_event),
     PRIMARY KEY (`id_participant`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
@@ -36,4 +36,5 @@ CREATE TABLE `Commentaire` (
     `id_event` int(11) NOT NULL,
     `date` datetime NOT NULL,
     PRIMARY KEY (`id_commentaire`)
+    FOREIGN KEY (`id_event`) REFERENCES Event(id_event),
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
