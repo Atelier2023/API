@@ -126,6 +126,34 @@ router.route('/:id_event')
         }
     });
 
+//update commentaires by id
+router.route('/update/:id_commentaires')
+    .post(async (req, res, next) => {
+        try {
+            const result = await db('Commentaire')
+                .where('id_event', req.params.id_commentaires)
+                .update({
+                    commentaire: req.body.commentaire
+                });
+                
+            if (!result) {
+                res.status(404).json({
+                    "type": "error",
+                    "error": 404,
+                    "message": "ressource non disponible : /commentaire/update/" + req.params.id_commentaire
+                });
+            } else {
+                res.status(200).json('commentaire modifié.');
+            }
+        } catch (error) {
+            res.json({
+                "type": "error",
+                "error": 500,
+                "message": "Erreur interne du serveur"
+            });
+        }
+    });
+
 //delete commentaire by id
 router.route('/delete/:id_commentaire')
     .delete(async (req, res, next) => {

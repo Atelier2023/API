@@ -110,6 +110,52 @@ router.route('/:id_participant')
         }
     });
 
+//update event by id
+router.route('/update/:id_event')
+    .post(async (req, res, next) => {
+        try {
+            const participant = await db('Participant')
+                .where('id_participant', req.params.id_participant)
+                .select()
+                .first();
+
+                if (!participant) {
+                    res.status(404).json({
+                        "type": "error",
+                        "error": 404,
+                        "message": "ressource non disponible : /participant/update/" + req.params.id_participant
+                    });
+                } else {
+                    const result = await db('Participant')
+                        .where('id_participant', req.params.id_participant)
+                        .update({
+                            name: req.body.name || participant.name,
+                            firstname: req.body.name || participant.firstname,
+                            tel_number: req.body.name || participant.tel_number,
+                            address: req.body.name || participant.address,
+                            state: req.body.name || participant.state,
+                        });
+
+                    if (!result) {
+                        res.status(404).json({
+                            "type": "error",
+                            "error": 404,
+                            "message": "ressource non disponible : /participant/update/" + req.params.id_participant
+                        });
+                    } else {
+                        res.status(200).json('participant modifié.');
+                    }
+                }
+
+        } catch (error) {
+            res.json({
+                "type": "error",
+                "error": 500,
+                "message": "Erreur interne du serveur"
+            });
+        }
+    });
+
 //delete participant by id
 router.route('/delete/:id_participant')
     .delete(async (req, res, next) => {

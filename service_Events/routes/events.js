@@ -110,6 +110,52 @@ router.route('/:id_event')
         }
     });
 
+//update event by id
+router.route('/update/:id_event')
+    .post(async (req, res, next) => {
+        try {
+            const event = await db('Event')
+                .where('id_event', req.params.id_event)
+                .select()
+                .first();
+
+                if (!event) {
+                    res.status(404).json({
+                        "type": "error",
+                        "error": 404,
+                        "message": "ressource non disponible : /event/update/" + req.params.id_event
+                    });
+                } else {
+                    const result = await db('Event')
+                        .where('id_event', req.params.id_event)
+                        .update({
+                            date_event: req.body.date_event || event.date_event,
+                            address: req.body.address || event.address,
+                            before: req.body.before || event.before,
+                            after: req.body.after || event.after,
+                            state: req.body.after || event.state
+                        });
+
+                    if (!result) {
+                        res.status(404).json({
+                            "type": "error",
+                            "error": 404,
+                            "message": "ressource non disponible : /event/update/" + req.params.id_event
+                        });
+                    } else {
+                        res.status(200).json('event modifié.');
+                    }
+                }
+
+        } catch (error) {
+            res.json({
+                "type": "error",
+                "error": 500,
+                "message": "Erreur interne du serveur"
+            });
+        }
+    });
+
 //delete event by id
 router.route('/delete/:id_event')
     .delete(async (req, res, next) => {
