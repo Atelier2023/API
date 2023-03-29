@@ -126,4 +126,30 @@ router.route('/:id_event')
         }
     });
 
+//delete commentaire by id
+router.route('/delete/:id_commentaire')
+    .delete(async (req, res, next) => {
+        try {
+            const result = await db('Commentaire')
+                .where('id_commentaire', req.params.id_commentaire)
+                .del();
+
+            if (!result) {
+                res.status(404).json({
+                    "type": "error",
+                    "error": 404,
+                    "message": "ressource non disponible : /Commentaires/delete/" + req.params.id_commentaire
+                });
+            } else {
+                res.status(200).json('Participant supprimé.');
+            }
+        } catch (error) {
+            res.json({
+                "type": "error",
+                "error": 500,
+                "message": "Erreur interne du serveur"
+            });
+        }
+    });
+
 module.exports = router;

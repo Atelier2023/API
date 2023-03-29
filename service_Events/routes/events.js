@@ -110,4 +110,30 @@ router.route('/:id_event')
         }
     });
 
+//delete event by id
+router.route('/delete/:id_event')
+    .delete(async (req, res, next) => {
+        try {
+            const result = await db('Event')
+                .where('id_event', req.params.id_event)
+                .del();
+
+            if (!result) {
+                res.status(404).json({
+                    "type": "error",
+                    "error": 404,
+                    "message": "ressource non disponible : /Events/delete/" + req.params.id_event
+                });
+            } else {
+                res.status(200).json('Participant supprimé.');
+            }
+        } catch (error) {
+            res.json({
+                "type": "error",
+                "error": 500,
+                "message": "Erreur interne du serveur"
+            });
+        }
+    });
+
 module.exports = router;
