@@ -16,7 +16,7 @@ router.route('/')
         }
 }); 
 
-// create event
+// create a comment
 router.route('/create')
     .post(async (req, res, next) => {
         try {
@@ -30,6 +30,44 @@ router.route('/create')
         } catch (error) {
             console.error(error);
             res.json(error.response.data);
+        }
+});
+
+// get all comments of an event
+router.route('/:id_event')
+    .get(async (req, res, next) => {
+        try {
+            const response = await axios.get('http://service_Events:3000/commentaires/' + req.params.id_event);
+            res.json(response.data);
+        } catch (error) {
+            console.error(error);
+            res.json(error.response.data)
+        }
+});
+
+// update a comment
+router.route('/update/:id_commentaire')
+    .put(async (req, res, next) => {
+        try {
+            const response = await axios.put('http://service_Events:3000/commentaires/update/' + req.params.id_commentaire, {
+                commentaire: req.body.commentaire,
+            });
+            res.json(response.data);
+        } catch (error) {
+            console.error(error);
+            res.json(error.response.data)
+        }
+});
+
+// delete a comment
+router.route('/delete/:id_commentaire')
+    .delete(async (req, res, next) => {
+        try {
+            const response = await axios.delete('http://service_Events:3000/commentaires/delete/' + req.params.id_commentaire);
+            res.json(response.data);
+        } catch (error) {
+            console.error(error);
+            res.json(error.response.data)
         }
 });
 

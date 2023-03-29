@@ -121,17 +121,18 @@ router.route('/:id_event')
             res.json({
                 "type": "error",
                 "error": 500,
-                "message": "Erreur interne du serveur"
+                "message": error
             });
         }
     });
 
 //update commentaires by id
-router.route('/update/:id_commentaires')
-    .post(async (req, res, next) => {
+//todo: if comment inexistant return 404
+router.route('/update/:id_commentaire')
+    .put(async (req, res, next) => {
         try {
             const result = await db('Commentaire')
-                .where('id_event', req.params.id_commentaires)
+                .where('id_commentaire', req.params.id_commentaire)
                 .update({
                     commentaire: req.body.commentaire
                 });
@@ -149,7 +150,7 @@ router.route('/update/:id_commentaires')
             res.json({
                 "type": "error",
                 "error": 500,
-                "message": "Erreur interne du serveur"
+                "message": error
             });
         }
     });
