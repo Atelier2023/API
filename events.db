@@ -35,6 +35,6 @@ CREATE TABLE `Commentaire` (
     `id_user` int(11) NOT NULL,
     `id_event` int(11) NOT NULL,
     `date` datetime NOT NULL,
-    PRIMARY KEY (`id_commentaire`)
-    FOREIGN KEY (`id_event`) REFERENCES Event(id_event),
+    PRIMARY KEY (`id_commentaire`),
+    FOREIGN KEY (`id_event`) REFERENCES Event(id_event)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;

@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 const axios = require('axios')
 
-// **** Gateway of service_Users ****
+// **** Gateway of service_Users/users.js ****
 
 // get all users
 router.route('/')
@@ -12,7 +12,7 @@ router.route('/')
             res.json(response.data);
         } catch (error) {
             console.error(error);
-            res.json(error)
+            res.json(error.response.data)
         }
 }); 
 
@@ -29,7 +29,7 @@ router.route('/create')
             res.json(response.data);
         } catch (error) {
             console.error(error);
-            res.json(error)
+            res.json(error.response.data)
         }
 });
 

@@ -79,7 +79,7 @@ router.route('/create')
             res.status(500).json({
                 "type": "error",
                 "error": 500,
-                "message": "Erreur interne du serveur"
+                "message": error
             })
         }
     });
