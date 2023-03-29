@@ -89,7 +89,7 @@ router.route('/:id_participant')
     .get(async (req, res, next) => {
         try {
             const result = await db('Participant')
-                .where('id_event', req.params.id_event)
+                .where('id_participant', req.params.id_participant)
                 .select();
 
             if (!result) {
@@ -111,8 +111,8 @@ router.route('/:id_participant')
     });
 
 //update event by id
-router.route('/update/:id_event')
-    .post(async (req, res, next) => {
+router.route('/update/:id_participant')
+    .put(async (req, res, next) => {
         try {
             const participant = await db('Participant')
                 .where('id_participant', req.params.id_participant)
@@ -130,10 +130,11 @@ router.route('/update/:id_event')
                         .where('id_participant', req.params.id_participant)
                         .update({
                             name: req.body.name || participant.name,
-                            firstname: req.body.name || participant.firstname,
-                            tel_number: req.body.name || participant.tel_number,
-                            address: req.body.name || participant.address,
-                            state: req.body.name || participant.state,
+                            firstname: req.body.firstname || participant.firstname,
+                            tel_number: req.body.tel_number || participant.tel_number,
+                            address: req.body.address || participant.address,
+                            state: req.body.state || participant.state,
+                            id_event: req.body.id_event || participant.id_event,
                         });
 
                     if (!result) {
@@ -151,7 +152,7 @@ router.route('/update/:id_event')
             res.json({
                 "type": "error",
                 "error": 500,
-                "message": "Erreur interne du serveur"
+                "message": error
             });
         }
     });
