@@ -33,9 +33,8 @@ router.route('/create')
         }
 });
 
-// delete user
-
-// to do
+// to do : -signin with refresh token and access token etc ...
+// - delete user 
 
 
 module.exports = router;
