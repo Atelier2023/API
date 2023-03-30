@@ -40,8 +40,7 @@ router.route('/:id_participant')
             const response = await axios.get('http://service_Events:3000/participants/' + req.params.id_participant);
             res.json(response.data);
         } catch (error) {
-            console.error(error);
-            res.json(error.response.data)
+            res.json(error)
         }
 }); 
 
@@ -59,8 +58,7 @@ router.route('/update/:id_participant')
             });
             res.json(response.data);
         } catch (error) {
-            console.error(error);
-            res.json(error.response.data)
+            res.json(error)
         }
 });
 
@@ -71,8 +69,7 @@ router.route('/delete/:id_participant')
             const response = await axios.delete('http://service_Events:3000/participants/delete/' + req.params.id_participant);
             res.json(response.data);    
         } catch (error) {
-            console.error(error);
-            res.json(error.response.data)
+            res.json(error)
         }   
 });
 

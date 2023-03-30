@@ -11,8 +11,7 @@ router.route('/')
             const response = await axios.get('http://service_Users:3000/users');
             res.json(response.data);
         } catch (error) {
-            console.error(error);
-            res.json(error.response.data)
+            res.json(error)
         }
 }); 
 
@@ -28,8 +27,7 @@ router.route('/create')
             });
             res.json(response.data);
         } catch (error) {
-            console.error(error);
-            res.json(error.response.data)
+            res.json(error)
         }
 });
 

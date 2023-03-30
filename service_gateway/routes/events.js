@@ -11,8 +11,7 @@ router.route('/')
             const response = await axios.get('http://service_Events:3000/events');
             res.json(response.data);
         } catch (error) {
-            console.error(error);
-            res.json(error.response.data)
+            res.json(error);
         }
 }); 
 
@@ -27,8 +26,7 @@ router.route('/create')
             });
             res.json(response.data);
         } catch (error) {
-            console.error(error);
-            res.json(error.response.data);
+            res.json(error);
         }
 });
 
@@ -39,8 +37,7 @@ router.route('/:id_event')
             const response = await axios.get('http://service_Events:3000/events/' + req.params.id_event);
             res.json(response.data);
         } catch (error) {
-            console.error(error);
-            res.json(error.response.data)
+            res.json(error)
         }
 }); 
 
@@ -51,8 +48,7 @@ router.route('/delete/:id_event')
             const response = await axios.delete('http://service_Events:3000/events/delete/' + req.params.id_event);
             res.json(response.data);
         } catch (error) {
-            console.error(error);
-            res.json(error.response.data)
+            res.json(error)
         }
 });
 
