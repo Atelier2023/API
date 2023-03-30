@@ -139,5 +139,12 @@ router.route('/refresh').post(async (req, res, next) => {
 }
 );
 
+router.route('/getRefresh/:id')
+    .get(async (req, res, next) => {
+        const users = await db('User').select('refresh_token').where('id_user', req.params.id);
+        res.status(200).json(users);
+    });
+
+
 
 module.exports = router;
