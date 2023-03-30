@@ -14,37 +14,12 @@ const db = knex({
     }
 });  
 
-// Get all participant
+// Get all participants
 router.route('/')
     .get(async (req, res, next) => {
         try {
-            let result;
-            if (req.query.event) {
-                // Get all participant by id_event
-                const participants = await db('Participant')
-                    .where('id_event', req.query.event)
-                    .select();
-
-                const participantResult = participants.map(participant => {
-                    return {
-                        "participant": {
-                            "id_participant": participant.id_participant,
-                            "name": participant.name,
-                            "firstname": participant.firstname,
-                            "tel_number": participant.tel_number,
-                            "address": participant.address,
-                        }
-                    }
-                });
-
-                result = {
-                    "type": "collection",
-                    "count": participantResult.length,
-                    "events": participantResult
-                };
-            } else {
-                result = await db('Participant').select();
-            }
+            const result = await db('Participant')
+                .select();
 
             if (!result) {
                 res.status(404).json({
@@ -85,7 +60,7 @@ router.route('/create')
         }
     });
 
-//get all event for participant
+//get all event for a participant
 router.route('/:id_participant')
     .get(async (req, res, next) => {
         try {
