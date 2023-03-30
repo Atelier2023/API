@@ -11,7 +11,7 @@ const db = knex({
         password: process.env.MARIADB_PASSWORD,
         database: process.env.MARIADB_DATABASE
     }
-});  
+});
 
 // Get all events
 router.route('/')
@@ -72,6 +72,9 @@ router.route('/create')
                 id_user: req.body.id_user,
                 address: req.body.address,
                 date_event: req.body.date_event,
+                before: false,
+                after: false,
+                state: 'coming',
             });
 
             res.status(201).json('event ajouté');
@@ -119,33 +122,33 @@ router.route('/update/:id_event')
                 .select()
                 .first();
 
-                if (!event) {
+            if (!event) {
+                res.status(404).json({
+                    "type": "error",
+                    "error": 404,
+                    "message": "ressource non disponible : /event/update/" + req.params.id_event
+                });
+            } else {
+                const result = await db('Event')
+                    .where('id_event', req.params.id_event)
+                    .update({
+                        date_event: req.body.date_event || event.date_event,
+                        address: req.body.address || event.address,
+                        before: req.body.before || event.before,
+                        after: req.body.after || event.after,
+                        state: req.body.after || event.state
+                    });
+
+                if (!result) {
                     res.status(404).json({
                         "type": "error",
                         "error": 404,
                         "message": "ressource non disponible : /event/update/" + req.params.id_event
                     });
                 } else {
-                    const result = await db('Event')
-                        .where('id_event', req.params.id_event)
-                        .update({
-                            date_event: req.body.date_event || event.date_event,
-                            address: req.body.address || event.address,
-                            before: req.body.before || event.before,
-                            after: req.body.after || event.after,
-                            state: req.body.after || event.state
-                        });
-
-                    if (!result) {
-                        res.status(404).json({
-                            "type": "error",
-                            "error": 404,
-                            "message": "ressource non disponible : /event/update/" + req.params.id_event
-                        });
-                    } else {
-                        res.status(200).json('event modifié.');
-                    }
+                    res.status(200).json('event modifié.');
                 }
+            }
 
         } catch (error) {
             res.json({
