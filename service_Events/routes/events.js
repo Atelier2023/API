@@ -64,6 +64,32 @@ router.route('/')
         }
     });
 
+//get all participants for event
+router.route('/participants/:id_event')
+    .get(async (req, res, next) => {
+        try {
+            await db('Participant')
+                .where('id_event', req.params.id_event)
+                .groupBy('id_participant');
+
+            if (!result) {
+                res.status(404).json({
+                    "type": "error",
+                    "error": 404,
+                    "message": "ressource non disponible : /event"
+                });
+            } else {
+                res.status(200).json(result);
+            }
+        } catch (error) {
+            res.json({
+                "type": "error",
+                "error": 500,
+                "message": "Erreur interne du serveur"
+            });
+        }
+    });
+
 //create event
 router.route('/create')
     .post(async (req, res, next) => {

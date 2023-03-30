@@ -11,8 +11,7 @@ router.route('/')
             const response = await axios.get('http://service_Events:3000/commentaires');
             res.json(response.data);
         } catch (error) {
-            console.error(error);
-            res.json(error.response.data)
+            res.json(error)
         }
 }); 
 
@@ -28,8 +27,7 @@ router.route('/create')
             });
             res.json(response.data);
         } catch (error) {
-            console.error(error);
-            res.json(error.response.data);
+            res.json(error);
         }
 });
 
@@ -40,8 +38,7 @@ router.route('/:id_event')
             const response = await axios.get('http://service_Events:3000/commentaires/' + req.params.id_event);
             res.json(response.data);
         } catch (error) {
-            console.error(error);
-            res.json(error.response.data)
+            res.json(error)
         }
 });
 
@@ -54,8 +51,7 @@ router.route('/update/:id_commentaire')
             });
             res.json(response.data);
         } catch (error) {
-            console.error(error);
-            res.json(error.response.data)
+            res.json(error)
         }
 });
 
@@ -66,8 +62,7 @@ router.route('/delete/:id_commentaire')
             const response = await axios.delete('http://service_Events:3000/commentaires/delete/' + req.params.id_commentaire);
             res.json(response.data);
         } catch (error) {
-            console.error(error);
-            res.json(error.response.data)
+            res.json(error)
         }
 });
 
