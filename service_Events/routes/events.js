@@ -1,5 +1,6 @@
 const express = require('express');
 const knex = require('knex');
+const shortid = require('shortid');
 const router = express.Router();
 
 const db = knex({
@@ -37,11 +38,11 @@ router.route('/')
         }
     });
 
-router.route('/getEvent/:id_event')
+router.route('/getEvent/:id_user')
     .get(async (req, res, next) => {
         try {
             const result = await db('Event')
-                .where('id_event', req.params.id_event)
+                .where('id_user', req.params.id_user)
                 .select();
 
             if (!result) {
@@ -231,6 +232,36 @@ router.route('/delete/:id_event')
                 });
             } else {
                 res.status(200).json('Participant supprimé.');
+            }
+        } catch (error) {
+            res.json({
+                "type": "error",
+                "error": 500,
+                "message": "Erreur interne du serveur"
+            });
+        }
+    });
+
+// create shared url
+router.route('/shared/:id_event')
+    .get(async (req, res, next) => {
+        try {
+            const url = shortid.generate();
+
+            const result = await db('Event')
+                .where('id_event', req.params.id_event)
+                .update({
+                    "shared_url": url
+                });
+
+            if (!result) {
+                res.status(404).json({
+                    "type": "error",
+                    "error": 404,
+                    "message": "ressource non disponible : /event"
+                });
+            } else {
+                res.status(200).json("url partagé");
             }
         } catch (error) {
             res.json({

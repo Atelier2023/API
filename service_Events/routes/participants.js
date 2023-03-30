@@ -1,5 +1,6 @@
 const express = require('express');
 const knex = require('knex');
+const shortid = require('shortid');
 const router = express.Router();
 
 const db = knex({
@@ -173,6 +174,41 @@ router.route('/delete/:id_participant')
                 });
             } else {
                 res.status(200).json('Participant supprimé.');
+            }
+        } catch (error) {
+            res.json({
+                "type": "error",
+                "error": 500,
+                "message": "Erreur interne du serveur"
+            });
+        }
+    });
+
+// get shared url
+router.route('/shared/:shared_url')
+    .get(async (req, res, next) => {
+        try {
+            if (shortid.isValid(req.params.shared_url)) {
+                const result = await db('Event')
+                    .where('shared_url', req.params.shared_url)
+                    .select()
+                    .first();
+
+                if (!result) {
+                    res.status(404).json({
+                        "type": "error",
+                        "error": 404,
+                        "message": "ressource non disponible : /participants/shared/" + req.params.shared_url
+                    });
+                } else {
+                    res.status(200).json(result);
+                }
+            } else {
+                res.status(404).json({
+                    "type": "error",
+                    "error": 404,
+                    "message": "ressource non disponible : /participants/shared/" + req.params.shared_url
+                });
             }
         } catch (error) {
             res.json({

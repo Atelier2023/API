@@ -12,6 +12,7 @@ CREATE TABLE `Event` (
     `is_after` bool DEFAULT false,
     `state` enum('in progress', 'coming', 'completed') DEFAULT 'coming' NOT NULL,
     `id_user` int(11),
+    `shared_url` varchar(128),
     PRIMARY KEY (`id_event`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
