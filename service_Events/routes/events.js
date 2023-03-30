@@ -17,34 +17,32 @@ const db = knex({
 router.route('/')
     .get(async (req, res, next) => {
         try {
-            let result;
-            if (req.query.user) {
-                const events = await db('Event')
-                    .where('id_user', req.query.user)
-                    .groupBy('id_event')
-                    .select();
+            const result = await db('Event').select();
 
-                const eventResult = events.map(event => {
-                    return {
-                        "event": {
-                            "id_event": event.id_event,
-                            "address": event.address,
-                            "state": event.state,
-                            "before": event.before,
-                            "after": event.after,
-                            "date_event": event.date_event
-                        }
-                    }
+            if (!result) {
+                res.status(404).json({
+                    "type": "error",
+                    "error": 404,
+                    "message": "ressource non disponible : /event"
                 });
-
-                result = {
-                    "type": "collection",
-                    "count": eventResult.length,
-                    "events": eventResult
-                };
             } else {
-                result = await db('Event').select();
+                res.status(200).json(result);
             }
+        } catch (error) {
+            res.json({
+                "type": "error",
+                "error": 500,
+                "message": "Erreur interne du serveur"
+            });
+        }
+    });
+
+router.route('/getEvent/:id_event')
+    .get(async (req, res, next) => {
+        try {
+            const result = await db('Event')
+                .where('id_event', req.params.id_event)
+                .select();
 
             if (!result) {
                 res.status(404).json({
@@ -88,6 +86,48 @@ router.route('/create')
     });
 
 //get event by id
+router.route('/:id_event')
+    .get(async (req, res, next) => {
+        try {
+            const events = await db('Event')
+                .where('id_event', req.params.id_event)
+                .select()
+                .first();
+                
+            if (!events) {
+                res.status(404).json({
+                    "type": "error",
+                    "error": 404,
+                    "message": "ressource non disponible : /event/" + req.params.id_event
+                });
+            } else {
+                const participants = await db('Participant')
+                    .where('id_event', events.id_event)
+                    .select();
+
+                const result = {
+                    "id_event": events.id_event,
+                    "date_event": events.date_event,
+                    "address": events.address,
+                    "before": events.before,
+                    "after": events.after,
+                    "state": events.coming,
+                    "id_user": events.id_user,
+                    "participants": participants
+                }
+
+                res.status(200).json(result);
+            }
+        } catch (error) {
+            res.json({
+                "type": "error",
+                "error": 500,
+                "message": "Erreur interne du serveur"
+            });
+        }
+    });
+
+//get all events by id_user
 router.route('/:id_event')
     .get(async (req, res, next) => {
         try {
