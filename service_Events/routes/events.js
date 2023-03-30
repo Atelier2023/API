@@ -40,28 +40,9 @@ router.route('/')
 router.route('/getEvent/:id_event')
     .get(async (req, res, next) => {
         try {
-            const events = await db('Event')
+            const result = await db('Event')
                 .where('id_event', req.params.id_event)
                 .select();
-
-            const eventResult = events.map(event => {
-                return {
-                    "event": {
-                        "id_event": event.id_event,
-                        "address": event.address,
-                        "state": event.state,
-                        "before": event.before,
-                        "after": event.after,
-                        "date_event": event.date_event
-                    }
-                }
-            });
-
-            result = {
-                "type": "collection",
-                "count": eventResult.length,
-                "events": eventResult
-            };
 
             if (!result) {
                 res.status(404).json({
