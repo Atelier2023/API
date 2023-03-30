@@ -8,8 +8,8 @@ CREATE TABLE `Event` (
     `id_event` int(11) NOT NULL AUTO_INCREMENT,
     `date_event` datetime NOT NULL,
     `address` varchar(128) NOT NULL,
-    `before` bool DEFAULT false,
-    `after` bool DEFAULT false,
+    `is_before` bool DEFAULT false,
+    `is_after` bool DEFAULT false,
     `state` enum('in progress', 'coming', 'completed') DEFAULT 'coming' NOT NULL,
     `id_user` int(11),
     PRIMARY KEY (`id_event`)
@@ -38,3 +38,19 @@ CREATE TABLE `Commentaire` (
     PRIMARY KEY (`id_commentaire`),
     FOREIGN KEY (`id_event`) REFERENCES Event(id_event)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+INSERT INTO Event (date_event, address, is_before, is_after, state, id_user) VALUES
+('2023-04-01 15:00:00', '789 Oak St, Anytown USA', true, false, 'completed', 1),
+('2023-04-02 10:00:00', '456 Elm St, Anytown USA', false, true, 'coming', 2),
+('2023-04-03 18:00:00', '123 Main St, Anytown USA', false, false, 'in progress', 1);
+
+INSERT INTO Participant (name, firstname, tel_number, address, state, id_event) VALUES
+('Doe', 'John', '0123456789', '789 Oak St, Anytown USA', 'present', 1),
+('Doe', 'Jane', '0987654321', '456 Elm St, Anytown USA', 'missing', 2),
+('Smith', 'Jack', '5555555555', '555 Fifth Ave, Anytown USA', 'not answered', 3),
+('Doe', 'Joe', '1111111111', '123 Main St, Anytown USA', 'present', 3);
+
+INSERT INTO Commentaire (commentaire, id_user, id_event, date) VALUES
+("Great event, thanks for having me!", 1, 1, '2023-04-01 16:30:00'),
+("Looking forward to tomorrow!", 2, 2, '2023-04-01 10:00:00'),
+("Can't make it tonight, sorry!", 1, 3, '2023-04-03 17:30:00');
