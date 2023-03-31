@@ -21,6 +21,7 @@ router.route('/create')
         try {
             const response = await axios.post('http://service_Events:3000/events/create', {
                 id_user: req.body.id_user,
+                title: req.body.title,
                 address: req.body.address,
                 date_event: req.body.date_event,
             });
