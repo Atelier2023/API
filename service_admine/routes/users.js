@@ -12,37 +12,42 @@ const knex = knex({
     connection: {
         host: process.env.MARIADB_HOST,
         port: 3306,
-        user: process.env.MARIADB_USER,
+        User: process.env.MARIADB_USER,
         password: process.env.MARIADB_PASSWORD,
         database: process.env.MARIADB_DATABASE
     }
 });
 
+/**
+ * Route : /Users
+ * Méthode : GET
+ * Description : récupération de tous les Users 
+ * retour : JSON de la liste de tous les Users
+ */
 router.route('/')
     .patch(methodNotAllowed)
     .delete(methodNotAllowed)
     .put(methodNotAllowed)
     .post(methodNotAllowed)
     .get(function (req, res, next) {
-
-        knex.from('Event')
+        knex.from('User')
             .select('*')
-            .then((Event) => {
-                console.log(Event)
-                if (Event == null) {
+            .then((Users) => {
+                console.log(Users)
+                if (Users == null) {
                     res.status(404).json({
                         "type": "error",
                         "error": 404,
                         "message": `ressources non disponibles`
                     });
                 } else {
-                    let liste_events =
+                    let liste_Users =
                     {
                         type: "collection",
-                        count: Event.length,
-                        Event: Event
+                        count: Users.length,
+                        Users: Users
                     }
-                    res.status(200).json(liste_events)
+                    res.status(200).json(liste_Users)
                 }
             }).catch((err) => {
                 res.status(500).json({
@@ -53,35 +58,37 @@ router.route('/')
             })
 
     })
- 
+
 /**
  * Route : /delete
  * Méthode : DELETE
- * Description : suprime un event avec son id
- * params : id_user
+ * Description : suprime un User avec son id
+ * params : id_User
+
  */
-router.route('/eventdelete/:id')
-.patch(methodNotAllowed)
-.post(methodNotAllowed)
-.put(methodNotAllowed)
-.delete(function (req, res, next) {
-    let id_events = req.params.id
-    knex.from('Event').delete('*')
-        .where({
-            'id_events': id_events
-        })
-        .then((user) => {
-            res.status(200).json({ data: id_events, status: "l'utilisateur a bien etait suprimer " });
-        })
-        .catch((err) => {
-            res.status(500).json({
-                "type": "error",
-                "error": 500,
-                "message": `Erreur de connexion à la base de données ` + err
-            });
-        })
-})
-.get(methodNotAllowed)
+router.route('/delete/:id')
+    .patch(methodNotAllowed)
+    .post(methodNotAllowed)
+    .put(methodNotAllowed)
+    .delete(function (req, res, next) {
+
+        knex.from('User').delete('*')
+            .where({
+                'id_User': req.params.id
+            })
+            .then((User) => {
+
+                res.status(200).json({ data: User, status: "l'utilisateur a bien etait suprimer " });
+            })
+            .catch((err) => {
+                res.status(500).json({
+                    "type": "error",
+                    "error": 500,
+                    "message": `Erreur de connexion à la base de données ` + err
+                });
+            })
+    })
+    .get(methodNotAllowed)
 
 
 module.exports = router;

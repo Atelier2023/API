@@ -72,12 +72,14 @@ router.route('/create')
                 title: req.body.title,
                 address: req.body.address,
                 date_event: req.body.date_event,
+                state: req.body.state,
                 is_before: false,
                 is_after: false,
             });
 
             res.status(201).json('event ajouté');
-        } catch (error) {
+        } 
+        catch (error) {
             res.status(500).json({
                 "type": "error",
                 "error": 500,
