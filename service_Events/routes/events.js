@@ -37,11 +37,11 @@ router.route('/')
         }
     });
 
-router.route('/getEvent/:id_event')
+router.route('/getEvent/:id_user')
     .get(async (req, res, next) => {
         try {
             const result = await db('Event')
-                .where('id_event', req.params.id_event)
+                .where('id_user', req.params.id_user)
                 .select();
 
             if (!result) {
@@ -68,6 +68,7 @@ router.route('/create')
         try {
             await db('Event').insert({
                 id_user: req.body.id_user,
+                title: req.body.title,
                 address: req.body.address,
                 date_event: req.body.date_event,
                 before: false,
@@ -93,7 +94,7 @@ router.route('/:id_event')
                 .where('id_event', req.params.id_event)
                 .select()
                 .first();
-                
+
             if (!events) {
                 res.status(404).json({
                     "type": "error",
@@ -135,7 +136,7 @@ router.route('/:id_event')
                 .where('id_event', req.params.id_event)
                 .select()
                 .first();
-                
+
             if (!events) {
                 res.status(404).json({
                     "type": "error",
