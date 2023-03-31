@@ -25,6 +25,7 @@ router.route('/create')
                 password: req.body.password,
                 tel_number: req.body.tel_number
             });
+
             res.json(response.data);
         } catch (error) {
             res.json(error)
@@ -34,5 +35,55 @@ router.route('/create')
 // to do : -signin with refresh token and access token etc ...
 // - delete user 
 
+// signin
+router.route('/signin')
+    .post(async (req, res, next) => {
+        try {
+            const response = await axios.post('http://service_Users:3000/users/signin', {
+                email: req.body.email,
+                password: req.body.password
+            });
+
+            res.json(response.data);
+        } catch (error) {
+            res.json(error)
+        }
+}); 
+
+// validate
+router.route('/validate')
+    .get(async (req, res, next) => {
+        try {
+            const response = await axios.get('http://service_Users:3000/users/validate');
+            res.json(response.data);
+        } catch (error) {
+            res.json(error)
+        }
+}); 
+
+// refresh
+router.route('/refresh')
+    .post(async (req, res, next) => {
+        try {
+            const response = await axios.post('http://service_Users:3000/users/refresh', {
+                authorization: req.headers.authorization
+            });
+
+            res.json(response.data);
+        } catch (error) {
+            res.json(error)
+        }
+}); 
+
+// get refresh token by id
+router.route('/getRefresh/:id')
+    .get(async (req, res, next) => {
+        try {
+            const response = await axios.post('http://service_Users:3000/users/getRefresh/:id');
+            res.json(response.data);
+        } catch (error) {
+            res.json(error)
+        }
+}); 
 
 module.exports = router;
