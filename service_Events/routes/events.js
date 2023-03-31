@@ -1,5 +1,6 @@
 const express = require('express');
 const knex = require('knex');
+const shortid = require('shortid');
 const router = express.Router();
 
 const db = knex({
@@ -71,9 +72,8 @@ router.route('/create')
                 title: req.body.title,
                 address: req.body.address,
                 date_event: req.body.date_event,
-                before: false,
-                after: false,
-                state: 'coming',
+                is_before: false,
+                is_after: false,
             });
 
             res.status(201).json('event ajouté');
@@ -110,8 +110,8 @@ router.route('/:id_event')
                     "id_event": events.id_event,
                     "date_event": events.date_event,
                     "address": events.address,
-                    "before": events.before,
-                    "after": events.after,
+                    "is_before": events.is_before,
+                    "is_after": events.is_after,
                     "state": events.coming,
                     "id_user": events.id_user,
                     "participants": participants
@@ -128,7 +128,7 @@ router.route('/:id_event')
         }
     });
 
-//get all events by id_user
+//get all events for an user
 router.route('/:id_event')
     .get(async (req, res, next) => {
         try {
@@ -152,8 +152,8 @@ router.route('/:id_event')
                     "id_event": events.id_event,
                     "date_event": events.date_event,
                     "address": events.address,
-                    "before": events.before,
-                    "after": events.after,
+                    "is_before": events.is_before,
+                    "is_after": events.is_after,
                     "state": events.coming,
                     "id_user": events.id_user,
                     "participants": participants
@@ -172,7 +172,7 @@ router.route('/:id_event')
 
 //update event by id
 router.route('/update/:id_event')
-    .post(async (req, res, next) => {
+    .put(async (req, res, next) => {
         try {
             const event = await db('Event')
                 .where('id_event', req.params.id_event)
@@ -191,8 +191,8 @@ router.route('/update/:id_event')
                     .update({
                         date_event: req.body.date_event || event.date_event,
                         address: req.body.address || event.address,
-                        before: req.body.before || event.before,
-                        after: req.body.after || event.after,
+                        is_before: req.body.is_before || event.is_before,
+                        is_after: req.body.is_after || event.is_after,
                         state: req.body.after || event.state
                     });
 
@@ -232,6 +232,36 @@ router.route('/delete/:id_event')
                 });
             } else {
                 res.status(200).json('Participant supprimé.');
+            }
+        } catch (error) {
+            res.json({
+                "type": "error",
+                "error": 500,
+                "message": "Erreur interne du serveur"
+            });
+        }
+    });
+
+// create shared url for an event
+router.route('/shared/:id_event')
+    .get(async (req, res, next) => {
+        try {
+            const url = shortid.generate();
+
+            const result = await db('Event')
+                .where('id_event', req.params.id_event)
+                .update({
+                    "shared_url": url
+                });
+
+            if (!result) {
+                res.status(404).json({
+                    "type": "error",
+                    "error": 404,
+                    "message": "ressource non disponible : /event"
+                });
+            } else {
+                res.status(200).json("url partagé");
             }
         } catch (error) {
             res.json({

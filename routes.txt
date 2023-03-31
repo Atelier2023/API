@@ -1,0 +1,91 @@
+Commentaire all routes :
+------------------------
+
+Get all comments:
+    - GET ('/commentaires')
+
+create comment
+    - POST ('/commentaires/create') 
+        commentaire
+        id_user
+        id_event
+        date
+
+get all commentaires by id_event
+    - GET ('/commentaires/:id_event')
+
+update commentaires by id
+    - PUT ('commentaires/update/:id_commentaire')
+        commentaire
+
+delete commentaire by id
+    - DELETE ('/commentaires/delete/:id_commentaire')
+
+
+------------------------
+Events all routes :
+------------------------
+
+Get all events
+    - GET ('/events')
+
+Get all event for user
+    - GET ('/events/getEvent/:id_user)
+
+Create event
+    - POST ('/events/create')
+        id_user
+        address
+        date_event
+        is_before
+        is_after
+
+Get all events for an id_user
+    - GET ('/events/:id_event')
+
+Update event by id
+    - PUT ('/events/update/:id_event')
+        date_event
+        address
+        is_before
+        is_after
+        state
+
+Delete event by id
+    - DELETE ('/events/delete/:id_event')
+
+Create shared url for an event
+    - GET ('/events/shared/:id_event')
+
+
+------------------------
+Participants all routes :
+------------------------
+
+Get all participants
+    - GET ('/participants')
+
+Create participant
+    - POST ('/participants/create')
+        name
+        firstname
+        tel_number
+        id_event
+
+Get all event for a participant
+    - GET ('/participants/:id_participant')
+
+Update event by id
+    - PUT ('/participants/update/:id_participant')
+        name
+        firstname
+        tel_number
+        address
+        state
+        id_event
+
+Delete participant by id
+    - DELETE ('participants/delete/:id_participant')
+
+Get shared url
+    - GET ('/participants/shared/:shared_url')

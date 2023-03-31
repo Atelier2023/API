@@ -1,5 +1,5 @@
 {
-  "name": "service_event",
+  "name": "service_auth",
   "version": "0.0.0",
   "private": true,
   "scripts": {
@@ -7,9 +7,9 @@
     "dev": "nodemon -L ./bin/www"
   },
   "dependencies": {
-    "bcrypt": "^5.1.0",
-    "bcryptjs": "2.4.3",
+    "bcryptjs": "^2.4.3",
     "body-parser": "1.19.0",
+    "jsonwebtoken": "^8.5.1",
     "cookie-parser": "~1.4.4",
     "cors": "2.8.5",
     "debug": "~2.6.9",
@@ -17,11 +17,10 @@
     "helmet": "4.4.1",
     "http-errors": "~1.6.3",
     "jade": "~1.11.0",
-    "knex": "^2.4.2",
+    "knex": "^1.0.4",
     "morgan": "~1.9.1",
     "mysql": "^2.18.1",
     "nodemon": "2.0.7",
-    "shortid": "^2.2.16",
     "uuid": "8.3.2",
     "validator": "13.5.2"
   }

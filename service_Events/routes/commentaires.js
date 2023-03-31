@@ -127,7 +127,6 @@ router.route('/:id_event')
     });
 
 //update commentaires by id
-//todo: if comment inexistant return 404
 router.route('/update/:id_commentaire')
     .put(async (req, res, next) => {
         try {

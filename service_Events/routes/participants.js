@@ -1,5 +1,6 @@
 const express = require('express');
 const knex = require('knex');
+const shortid = require('shortid');
 const router = express.Router();
 
 const db = knex({
@@ -13,37 +14,12 @@ const db = knex({
     }
 });  
 
-// Get all participant
+// Get all participants
 router.route('/')
     .get(async (req, res, next) => {
         try {
-            let result;
-            if (req.query.event) {
-                // Get all participant by id_event
-                const participants = await db('Participant')
-                    .where('id_event', req.query.event)
-                    .select();
-
-                const participantResult = participants.map(participant => {
-                    return {
-                        "participant": {
-                            "id_participant": participant.id_participant,
-                            "name": participant.name,
-                            "firstname": participant.firstname,
-                            "tel_number": participant.tel_number,
-                            "address": participant.address,
-                        }
-                    }
-                });
-
-                result = {
-                    "type": "collection",
-                    "count": participantResult.length,
-                    "events": participantResult
-                };
-            } else {
-                result = await db('Participant').select();
-            }
+            const result = await db('Participant')
+                .select();
 
             if (!result) {
                 res.status(404).json({
@@ -84,7 +60,7 @@ router.route('/create')
         }
     });
 
-//get all event for participant
+//get all event for a participant
 router.route('/:id_participant')
     .get(async (req, res, next) => {
         try {
@@ -173,6 +149,41 @@ router.route('/delete/:id_participant')
                 });
             } else {
                 res.status(200).json('Participant supprimé.');
+            }
+        } catch (error) {
+            res.json({
+                "type": "error",
+                "error": 500,
+                "message": "Erreur interne du serveur"
+            });
+        }
+    });
+
+// get shared url
+router.route('/shared/:shared_url')
+    .get(async (req, res, next) => {
+        try {
+            if (shortid.isValid(req.params.shared_url)) {
+                const result = await db('Event')
+                    .where('shared_url', req.params.shared_url)
+                    .select()
+                    .first();
+
+                if (!result) {
+                    res.status(404).json({
+                        "type": "error",
+                        "error": 404,
+                        "message": "ressource non disponible : /participants/shared/" + req.params.shared_url
+                    });
+                } else {
+                    res.status(200).json(result);
+                }
+            } else {
+                res.status(404).json({
+                    "type": "error",
+                    "error": 404,
+                    "message": "ressource non disponible : /participants/shared/" + req.params.shared_url
+                });
             }
         } catch (error) {
             res.json({
