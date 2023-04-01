@@ -25,6 +25,22 @@ router.route('/')
         res.status(200).json(users);
     });
 
+// check if email exisit
+router.route('/check-email/')
+    .post(async (req, res, next) => {
+        db('User')
+            .where('email', req.body.email)
+            .select('email')
+            .first()
+                .then((row) => { 
+                    if (!row) {
+                        res.status(200).json("user don't exist");
+                    } else {
+                        res.status(200).json("user exist");
+                    }
+                });
+    });
+
 // create user rdv
 router.route('/create')
     .post(async (req, res, next) => {
