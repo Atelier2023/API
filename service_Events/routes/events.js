@@ -72,8 +72,9 @@ router.route('/create')
                 title: req.body.title,
                 address: req.body.address,
                 date_event: req.body.date_event,
-                before: false,
-                after: false,
+                is_before: false,
+                is_after: false,
+                shared_url: req.body.shared_url,
             });
 
             res.status(201).json('event ajouté');
@@ -82,7 +83,7 @@ router.route('/create')
             res.status(500).json({
                 "type": "error",
                 "error": 500,
-                "message": "Erreur interne du serveur",
+                "message": error,
             })
         }
     });
