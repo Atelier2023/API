@@ -93,12 +93,10 @@ router.route('/:id_event')
 
             const commentResult = comments.map(comment => {
                 return {
-                    "comment": {
-                        "id_commentaire": comment.id_commentaire,
-                        "id_user": comment.id_user,
-                        "commentaire": comment.commentaire,
-                        "date": comment.date,
-                    }
+                    "id_commentaire": comment.id_commentaire,
+                    "id_user": comment.id_user,
+                    "commentaire": comment.commentaire,
+                    "date": comment.date,
                 }
             });
 
