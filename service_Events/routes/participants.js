@@ -47,6 +47,7 @@ router.route('/create')
                 name: req.body.name,
                 firstname: req.body.firstname,
                 tel_number: req.body.tel_number,
+                state: req.body.state,
                 id_event: req.body.id_event,
             });
 
@@ -82,6 +83,49 @@ router.route('/:id_participant')
                 "type": "error",
                 "error": 500,
                 "message": "Erreur interne du serveur"
+            });
+        }
+    });
+
+//get all participant by id event
+router.route('/getParticipants/:id_event')
+    .get(async (req, res, next) => {
+        try {
+            const participants = await db('Participant')
+                .where('id_event', req.params.id_event)
+                .select();
+
+            const participantsResult = participants.map(participant => {
+                return {
+                    "participants": {
+                        "id_participant": participant.id_commentaire,
+                        "name": participant.name,
+                        "firstname": participant.firstname,
+                        "tel_number": participant.tel_number,
+                        "id_event": participant.id_event,
+                        "state": participant.state,
+                    }
+                }
+            });
+
+            result = {
+                "participants": participantsResult
+            };
+
+            if (!result) {
+                res.status(404).json({
+                    "type": "error",
+                    "error": 404,
+                    "message": "ressource non disponible : /participants/getParticipants" + req.params.id_event
+                });
+            } else {
+                res.status(200).json(result);
+            }
+        } catch (error) {
+            res.json({
+                "type": "error",
+                "error": 500,
+                "message": error
             });
         }
     });
@@ -159,39 +203,39 @@ router.route('/delete/:id_participant')
         }
     });
 
-// get shared url
-router.route('/shared/:shared_url')
-    .get(async (req, res, next) => {
-        try {
-            if (shortid.isValid(req.params.shared_url)) {
-                const result = await db('Event')
-                    .where('shared_url', req.params.shared_url)
-                    .select()
-                    .first();
+// // get shared url
+// router.route('/shared/:shared_url')
+//     .get(async (req, res, next) => {
+//         try {
+//             if (shortid.isValid(req.params.shared_url)) {
+//                 const result = await db('Event')
+//                     .where('shared_url', req.params.shared_url)
+//                     .select()
+//                     .first();
 
-                if (!result) {
-                    res.status(404).json({
-                        "type": "error",
-                        "error": 404,
-                        "message": "ressource non disponible : /participants/shared/" + req.params.shared_url
-                    });
-                } else {
-                    res.status(200).json(result);
-                }
-            } else {
-                res.status(404).json({
-                    "type": "error",
-                    "error": 404,
-                    "message": "ressource non disponible : /participants/shared/" + req.params.shared_url
-                });
-            }
-        } catch (error) {
-            res.json({
-                "type": "error",
-                "error": 500,
-                "message": "Erreur interne du serveur"
-            });
-        }
-    });
+//                 if (!result) {
+//                     res.status(404).json({
+//                         "type": "error",
+//                         "error": 404,
+//                         "message": "ressource non disponible : /participants/shared/" + req.params.shared_url
+//                     });
+//                 } else {
+//                     res.status(200).json(result);
+//                 }
+//             } else {
+//                 res.status(404).json({
+//                     "type": "error",
+//                     "error": 404,
+//                     "message": "ressource non disponible : /participants/shared/" + req.params.shared_url
+//                 });
+//             }
+//         } catch (error) {
+//             res.json({
+//                 "type": "error",
+//                 "error": 500,
+//                 "message": "Erreur interne du serveur"
+//             });
+//         }
+//     });
 
 module.exports = router;

@@ -67,6 +67,7 @@ router.route('/getEvent/:id_user')
 router.route('/create')
     .post(async (req, res, next) => {
         try {
+            const url = shortid.generate();
             await db('Event').insert({
                 id_user: req.body.id_user,
                 title: req.body.title,
@@ -74,7 +75,7 @@ router.route('/create')
                 date_event: req.body.date_event,
                 is_before: false,
                 is_after: false,
-                shared_url: req.body.shared_url,
+                shared_url: url
             });
 
             res.status(201).json('event ajouté');
@@ -117,7 +118,8 @@ router.route('/:id_event')
                     "is_after": events.is_after,
                     "state": events.coming,
                     "id_user": events.id_user,
-                    "participants": participants
+                    "participants": participants,
+                    "shared_url": events.shared_url
                 }
 
                 res.status(200).json(result);
@@ -204,26 +206,40 @@ router.route('/delete/:id_event')
         }
     });
 
-// create shared url for an event
-router.route('/shared/:id_event')
+// get event by shared url
+router.route('/shared/:shared_url')
     .get(async (req, res, next) => {
         try {
-            const url = shortid.generate();
+            const events = await db('Event')
+                .where('shared_url', req.params.shared_url)
+                .select()
+                .first();
 
-            const result = await db('Event')
-                .where('id_event', req.params.id_event)
-                .update({
-                    "shared_url": url
-                });
-
-            if (!result) {
+            if (!events) {
                 res.status(404).json({
                     "type": "error",
                     "error": 404,
-                    "message": "ressource non disponible : /event"
+                    "message": "ressource non disponible : /event/" + req.params.shared_url
                 });
             } else {
-                res.status(200).json("url partagé");
+                const participants = await db('Participant')
+                    .where('id_event', events.id_event)
+                    .select();
+                    
+                const result = {
+                    "id_event": events.id_event,
+                    'title': events.title,
+                    "date_event": events.date_event,
+                    "address": events.address,
+                    "is_before": events.is_before,
+                    "is_after": events.is_after,
+                    "state": events.coming,
+                    "id_user": events.id_user,
+                    "participants": participants,
+                    "shared_url": events.shared_url
+                }
+
+                res.status(200).json(result);
             }
         } catch (error) {
             res.json({
@@ -233,5 +249,6 @@ router.route('/shared/:id_event')
             });
         }
     });
+
 
 module.exports = router;
