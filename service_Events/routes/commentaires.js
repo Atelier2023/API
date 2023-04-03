@@ -11,7 +11,7 @@ const db = knex({
         password: process.env.MARIADB_PASSWORD,
         database: process.env.MARIADB_DATABASE
     }
-});  
+});
 
 // Get all comments
 router.route('/')
@@ -103,8 +103,6 @@ router.route('/:id_event')
             });
 
             result = {
-                "type": "collection",
-                "count": commentResult.length,
                 "comments": commentResult
             };
 
@@ -112,7 +110,7 @@ router.route('/:id_event')
                 res.status(404).json({
                     "type": "error",
                     "error": 404,
-                    "message": "ressource non disponible : /commentaire/" + req.params.id_event 
+                    "message": "ressource non disponible : /commentaire/" + req.params.id_event
                 });
             } else {
                 res.status(200).json(result);
@@ -135,7 +133,7 @@ router.route('/update/:id_commentaire')
                 .update({
                     commentaire: req.body.commentaire
                 });
-                
+
             if (!result) {
                 res.status(404).json({
                     "type": "error",

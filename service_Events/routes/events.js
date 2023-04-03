@@ -109,6 +109,7 @@ router.route('/:id_event')
 
                 const result = {
                     "id_event": events.id_event,
+                    'title': events.title,
                     "date_event": events.date_event,
                     "address": events.address,
                     "is_before": events.is_before,
