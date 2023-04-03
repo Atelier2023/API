@@ -77,7 +77,8 @@ router.route('/create')
             });
 
             res.status(201).json('event ajouté');
-        } catch (error) {
+        }
+        catch (error) {
             res.status(500).json({
                 "type": "error",
                 "error": 500,

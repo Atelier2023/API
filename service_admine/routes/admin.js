@@ -1,16 +1,28 @@
 const express = require('express');
 const router = express.Router();
-const knex = require('../knex.js');
+
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 
 const JWT_SECRET = process.env.JWT_SECRET;
 
 const methodNotAllowed = require('../errors/methodNotAllowed.js');
+
+const knex = knex({
+    client: 'mysql',
+    connection: {
+        host: process.env.MARIADB_HOST,
+        port: 3306,
+        user: process.env.MARIADB_USER,
+        password: process.env.MARIADB_PASSWORD,
+        database: process.env.MARIADB_DATABASE
+    }
+});
+
 /**
- * Route : /users
+ * Route : /admin
  * Méthode : GET
- * Description : récupération de tous les users 
+ * Description : récupération de tous les admin 
  * retour : JSON de la liste de tous les users
  */
 router.route('/')
@@ -20,7 +32,7 @@ router.route('/')
     .post(methodNotAllowed)
     .get(function (req, res, next) {
 
-        knex.from('user')
+        knex.from('admin')
             .select('*')
             .then((users) => {
                 console.log(users)
@@ -50,7 +62,7 @@ router.route('/')
     })
 
 /**
- * Route : /signup
+ * Route : admin/signup
  * Méthode : POST
  * Description : permet d'inscrire un utilisateur
  * params : username, email, passwd
@@ -87,7 +99,7 @@ router.route('/signup')
     .get(methodNotAllowed)
 
 /**
- * Route : /signin
+ * Route : admin/signin
  * Méthode : POST
  * Description : permet de connecter un utilisateur
  * params : email, passwd
@@ -131,14 +143,12 @@ router.route('/signin')
     .get(methodNotAllowed)
 
 
-/*-------------route admin -----------------*/
-
 /**
  * Route : /delete
  * Méthode : DELETE
  * Description : suprime un user avec son id
  * params : id_user
- * Retour :
+
  */
 router.route('/delete/:id')
     .patch(methodNotAllowed)
@@ -151,46 +161,8 @@ router.route('/delete/:id')
                 'id_user': req.params.id
             })
             .then((user) => {
-                // if (!user) { res.status(400).json({ error: "Invalid username or password", status: "error" }); return; }
-
-                // if ( bcrypt.compare(passwd, user.password)) { res.status(400).json({ error: "Invalid username or password", status: "error" }); return; }
 
                 res.status(200).json({ data: user, status: "l'utilisateur a bien etait suprimer " });
-            })
-            .catch((err) => {
-                res.status(500).json({
-                    "type": "error",
-                    "error": 500,
-                    "message": `Erreur de connexion à la base de données ` + err
-                });
-            })
-    })
-    .get(methodNotAllowed)
-
-
-/**
- * Route : /delete
- * Méthode : DELETE
- * Description : suprime un user avec son id
- * params : id_user
- * Retour :
- */
-router.route('/eventdelete/:id')
-    .patch(methodNotAllowed)
-    .post(methodNotAllowed)
-    .put(methodNotAllowed)
-    .delete(function (req, res, next) {
-        let id_events = req.params.id
-        knex.from('events').delete('*')
-            .where({
-                'id_events': id_events
-            })
-            .then((user) => {
-                // if (!user) { res.status(400).json({ error: "Invalid username or password", status: "error" }); return; }
-
-                // if ( bcrypt.compare(passwd, user.password)) { res.status(400).json({ error: "Invalid username or password", status: "error" }); return; }
-
-                res.status(200).json({ data: id_events, status: "l'utilisateur a bien etait suprimer " });
             })
             .catch((err) => {
                 res.status(500).json({
