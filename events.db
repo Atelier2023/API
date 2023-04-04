@@ -11,7 +11,7 @@ CREATE TABLE `Event` (
     `address` varchar(128) NOT NULL,
     `is_before` bool DEFAULT false,
     `is_after` bool DEFAULT false,
-    `state` enum('in progress', 'coming', 'completed') DEFAULT 'coming' NOT NULL,
+    `state` enum('in_progress', 'coming', 'completed') DEFAULT 'coming' NOT NULL,
     `id_user` int(11),
     `shared_url` varchar(128),
     PRIMARY KEY (`id_event`)
@@ -24,7 +24,7 @@ CREATE TABLE `Participant` (
     `firstname` varchar(128) NOT NULL,
     `tel_number` varchar(12) NOT NULL,
     `address` varchar(256),
-    `state` enum('present', 'missing', 'not answered') DEFAULT 'not answered' NOT NULL,
+    `state` enum('present', 'missing', 'not_answered') DEFAULT 'not_answered' NOT NULL,
     `id_event` int(11) NOT NULL,
     FOREIGN KEY (`id_event`) REFERENCES Event(id_event),
     PRIMARY KEY (`id_participant`)
