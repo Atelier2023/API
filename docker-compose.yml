@@ -12,7 +12,7 @@ services:
     container_name: docker_nodejs_bootstrap_api
     image: node
     ports:
-      - "19100:3000"
+      - 63650:3000
     volumes:
       - ./service_Events:/app
     working_dir: /app
@@ -31,7 +31,7 @@ services:
     container_name: docker_service_Users
     image: node
     ports:
-      - "19102:3000"
+      - 63652:3000
     volumes:
       - ./service_Users:/app
     working_dir: /app
@@ -50,7 +50,7 @@ services:
   #   container_name: docker_service_admin
   #   image: node
   #   ports:
-  #     - "19104:3000"
+  #     - "63654:3000"
   #   volumes:
   #     - ./service_admin:/app
   #   working_dir: /app
@@ -67,15 +67,15 @@ services:
     container_name: docker_service_gateway
     image: node
     ports:
-      - "19106:3000"
+      - 63656:3000
     volumes:
       - ./service_gateway:/app
     working_dir: /app
     command: bash -c 'npm i && npm run dev'
     #command: npm start #for production environment
     #restart: unless-stopped #to activate in production environment
-    # env_file:
-    #   - ./gateway.env
+    env_file:
+      - ./gateway.env
     networks:
       - docker_nodejs_bootstrap
     depends_on:
@@ -90,7 +90,7 @@ services:
     image: mariadb:latest
     container_name: docker-service_Users-mariadb
     ports:
-      - 3308:3306
+      - 63640:3306
     env_file:
       - ./usr.env
     networks:
@@ -102,7 +102,7 @@ services:
     image: mariadb:latest
     container_name: docker_mariadb_bootstrap_api
     ports:
-      - 3306:3306
+      - 63642:3306
     env_file:
       - ./event.env
     networks:
@@ -113,6 +113,6 @@ services:
   adminer:
     image: adminer
     ports:
-      - 8080:8080
+      - 63645:8080
     networks:
       - docker_nodejs_bootstrap
