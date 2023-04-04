@@ -44,12 +44,12 @@ CREATE TABLE `Commentaire` (
 INSERT INTO Event (date_event, title, address, is_before, is_after, state, id_user) VALUES
 ('2023-04-01 15:00:00', 'Giga fête', '789 Oak St, Anytown USA', true, false, 'completed', 1),
 ('2023-04-02 10:00:00', 'OE OE OE', '456 Elm St, Anytown USA', false, true, 'coming', 2),
-('2023-04-03 18:00:00', 'Pourquoi pas', '123 Main St, Anytown USA', false, false, 'in progress', 1);
+('2023-04-03 18:00:00', 'Pourquoi pas', '123 Main St, Anytown USA', false, false, 'in_progress', 1);
 
 INSERT INTO Participant (name, firstname, tel_number, address, state, id_event) VALUES
 ('Doe', 'John', '0123456789', '789 Oak St, Anytown USA', 'present', 1),
 ('Doe', 'Jane', '0987654321', '456 Elm St, Anytown USA', 'missing', 2),
-('Smith', 'Jack', '5555555555', '555 Fifth Ave, Anytown USA', 'not answered', 3),
+('Smith', 'Jack', '5555555555', '555 Fifth Ave, Anytown USA', 'not_answered', 3),
 ('Doe', 'Joe', '1111111111', '123 Main St, Anytown USA', 'present', 3);
 
 INSERT INTO Commentaire (commentaire, id_user, id_event, date) VALUES
