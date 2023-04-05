@@ -8,9 +8,9 @@ http://localhost:19106 = service_gateway
 http://localhost:19100 = service_Event
 http://localhost:19102 = service_Users
 
-Priviligier le port de service_gateway
+Priviligier le port de service_gateway <br><br>
 
-**Projet réalisé par :**
+##Projet réalisé par :
 
 **Damien WELFRINGER**
 **Yanis REZGUI**
