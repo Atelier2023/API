@@ -103,6 +103,7 @@ router.route('/getParticipants/:id_event')
                         "name": participant.name,
                         "firstname": participant.firstname,
                         "tel_number": participant.tel_number,
+                        "comment": participant.comment,
                         "id_event": participant.id_event,
                         "state": participant.state,
                     }
