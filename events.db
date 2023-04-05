@@ -11,7 +11,7 @@ CREATE TABLE `Event` (
     `address` varchar(128) NOT NULL,
     `is_before` bool DEFAULT false,
     `is_after` bool DEFAULT false,
-    `state` enum('in_progress', 'coming', 'completed') DEFAULT 'coming' NOT NULL,
+    `state` enum('en cours', 'arrive', 'terminé') DEFAULT 'arrive' NOT NULL,
     `id_user` int(11),
     `shared_url` varchar(128),
     PRIMARY KEY (`id_event`)
@@ -25,7 +25,7 @@ CREATE TABLE `Participant` (
     `email` varchar(128),
     `tel_number` varchar(12),
     `comment` varchar(256),
-    `state` enum('vient', 'ne vient pas', 'n'as pas répondu') DEFAULT 'n'as pas répondu' NOT NULL,
+    `state` enum('vient', 'ne vient pas', 'n\'as pas répondu') DEFAULT 'n\'as pas répondu' NOT NULL,
     `id_event` int(11) NOT NULL,
     FOREIGN KEY (`id_event`) REFERENCES Event(id_event),
     PRIMARY KEY (`id_participant`)
@@ -43,15 +43,15 @@ CREATE TABLE `Commentaire` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 INSERT INTO Event (date_event, title, address, is_before, is_after, state, id_user) VALUES
-('2023-04-01 15:00:00', 'Giga fête', '789 Oak St, Anytown USA', true, false, 'completed', 1),
-('2023-04-02 10:00:00', 'OE OE OE', '456 Elm St, Anytown USA', false, true, 'coming', 2),
-('2023-04-03 18:00:00', 'Pourquoi pas', '123 Main St, Anytown USA', false, false, 'in_progress', 1);
+('2023-04-01 15:00:00', 'Giga fête', '789 Oak St, Anytown USA', true, false, 'terminé', 1),
+('2023-04-02 10:00:00', 'OE OE OE', '456 Elm St, Anytown USA', false, true, 'arrive', 2),
+('2023-04-03 18:00:00', 'Pourquoi pas', '123 Main St, Anytown USA', false, false, 'en cours', 1);
 
 INSERT INTO Participant (name, firstname, tel_number, comment, state, id_event) VALUES
 ('Doe', 'John', '0123456789', 'jai hate', 'present', 1),
-('Doe', 'Jane', '0987654321', 'je peux pas jai poney', 'missing', 2),
-('Smith', 'Jack', '5555555555', 'je ne sais pas encore', 'not_answered', 3),
-('Doe', 'Joe', '1111111111', 'vivement la soirée', 'present', 3);
+('Doe', 'Jane', '0987654321', 'je peux pas jai poney', 'ne vient pas', 2),
+('Smith', 'Jack', '5555555555', 'je ne sais pas encore', 'n\'as pas répondu', 3),
+('Doe', 'Joe', '1111111111', 'vivement la soirée', 'vient', 3);
 
 INSERT INTO Commentaire (commentaire, id_user, id_event, date) VALUES
 ("Great event, thanks for having me!", 1, 1, '2023-04-01 16:30:00'),
