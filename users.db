@@ -16,8 +16,4 @@ CREATE TABLE `User` (
     UNIQUE (`email`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
-INSERT INTO User (id_user, firstname, email, password, tel_number, address, refresh_token) VALUES
-(1, 'John Doe', 'johndoe@example.com', 'password123', '1234567890', '123 Main St, Anytown USA', 'abcdefg123456'),
-(2, 'Jane Smith', 'janesmith@example.com', 'pass123word', '0987654321', '456 Elm St, Anytown USA', 'ghijklm789012'),
-(3, 'Bob Johnson', 'bobjohnson@example.com', 'qwerty123', '5555555555', NULL, 'nopqrst345678'),
-(4, 'Alice Brown', 'alicebrown@example.com', 'password', '1111111111', '789 Oak St, Anytown USA', 'uvwxyz901234');
+
