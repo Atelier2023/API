@@ -12,7 +12,7 @@ const db = knex({
         password: process.env.MARIADB_PASSWORD,
         database: process.env.MARIADB_DATABASE
     }
-});  
+});
 
 // Get all participants
 router.route('/')
@@ -47,6 +47,7 @@ router.route('/create')
                 name: req.body.name,
                 firstname: req.body.firstname,
                 tel_number: req.body.tel_number,
+                comment: req.body.comment,
                 state: req.body.state,
                 id_event: req.body.id_event,
             });
@@ -139,34 +140,34 @@ router.route('/update/:id_participant')
                 .select()
                 .first();
 
-                if (!participant) {
+            if (!participant) {
+                res.status(404).json({
+                    "type": "error",
+                    "error": 404,
+                    "message": "ressource non disponible : /participant/update/" + req.params.id_participant
+                });
+            } else {
+                const result = await db('Participant')
+                    .where('id_participant', req.params.id_participant)
+                    .update({
+                        name: req.body.name || participant.name,
+                        firstname: req.body.firstname || participant.firstname,
+                        tel_number: req.body.tel_number || participant.tel_number,
+                        comment: req.body.comment || participant.comment,
+                        state: req.body.state || participant.state,
+                        id_event: req.body.id_event || participant.id_event,
+                    });
+
+                if (!result) {
                     res.status(404).json({
                         "type": "error",
                         "error": 404,
                         "message": "ressource non disponible : /participant/update/" + req.params.id_participant
                     });
                 } else {
-                    const result = await db('Participant')
-                        .where('id_participant', req.params.id_participant)
-                        .update({
-                            name: req.body.name || participant.name,
-                            firstname: req.body.firstname || participant.firstname,
-                            tel_number: req.body.tel_number || participant.tel_number,
-                            address: req.body.address || participant.address,
-                            state: req.body.state || participant.state,
-                            id_event: req.body.id_event || participant.id_event,
-                        });
-
-                    if (!result) {
-                        res.status(404).json({
-                            "type": "error",
-                            "error": 404,
-                            "message": "ressource non disponible : /participant/update/" + req.params.id_participant
-                        });
-                    } else {
-                        res.status(200).json('participant modifié.');
-                    }
+                    res.status(200).json('participant modifié.');
                 }
+            }
 
         } catch (error) {
             res.json({
