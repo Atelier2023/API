@@ -50,7 +50,8 @@ router.route('/create')
                 comment: req.body.comment,
                 state: req.body.state,
                 id_event: req.body.id_event,
-            }).returning('id_participant');
+                email: req.body.email
+            })
 
             res.status(201).json('participant ajouté');
         } catch (error) {
@@ -214,6 +215,33 @@ router.route('/delete/:id_participant')
                 });
             } else {
                 res.status(200).json('Participant supprimé.');
+            }
+        } catch (error) {
+            res.json({
+                "type": "error",
+                "error": 500,
+                "message": "Erreur interne du serveur"
+            });
+        }
+    });
+
+
+router.route('/idparticipant')
+    .post(async (req, res, next) => {
+        try {
+            const result = await db('Participant')
+                .select('id_participant')
+                .where('email', req.body.email)
+                .andWhere('id_event', req.body.id_event); // Add additional condition here
+
+            if (!result || result.length === 0) {
+                res.status(404).json({
+                    "type": "error",
+                    "error": 404,
+                    "message": "ressource non disponible : /participant"
+                });
+            } else {
+                res.status(200).json(result);
             }
         } catch (error) {
             res.json({
