@@ -41,7 +41,7 @@ router.route('/')
 
 // Get participant with email
 router.route('/get/email')
-    .get(async (req, res, next) => {
+    .post(async (req, res, next) => {
         try {
             const result = await db('Participant')
                 .where('email', req.body.email)
