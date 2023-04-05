@@ -39,6 +39,32 @@ router.route('/')
         }
     });
 
+// Get participant with email
+router.route('/get/email')
+    .get(async (req, res, next) => {
+        try {
+            const result = await db('Participant')
+                .where('email', req.body.email)
+                .select();
+
+            if (!result) {
+                res.status(404).json({
+                    "type": "error",
+                    "error": 404,
+                    "message": "ressource non disponible : /participant/get/email"
+                });
+            } else {
+                res.status(200).json(result);
+            }
+        } catch (error) {
+            res.json({
+                "type": "error",
+                "error": 500,
+                "message": "Erreur interne du serveur"
+            });
+        }
+    });
+
 //create participant
 router.route('/create')
     .post(async (req, res, next) => {
