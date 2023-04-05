@@ -278,4 +278,29 @@ router.route('/idparticipant')
         }
     });
 
+router.route('/getParticipant/:id_participant')
+    .get(async (req, res, next) => {
+        try {
+            const result = await db('Participant')
+                .where('id_participant', req.params.id_participant)
+                .select("firstname");
+
+            if (!result) {
+                res.status(404).json({
+                    "type": "error",
+                    "error": 404,
+                    "message": "ressource non disponible : /event"
+                });
+            } else {
+                res.status(200).json(result);
+            }
+        } catch (error) {
+            res.json({
+                "type": "error",
+                "error": 500,
+                "message": "Erreur interne du serveur"
+            });
+        }
+    });
+
 module.exports = router;
