@@ -50,7 +50,7 @@ router.route('/create')
                 comment: req.body.comment,
                 state: req.body.state,
                 id_event: req.body.id_event,
-            });
+            }).returning('id_participant');
 
             res.status(201).json('participant ajouté');
         } catch (error) {
