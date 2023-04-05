@@ -4,19 +4,21 @@
 `docker compose up`
 
 ## les routes utilisées
-http://localhost:19106 = service_gateway
+http://localhost:19106 = service_gateway 
+
 http://localhost:19100 = service_Event
+
 http://localhost:19102 = service_Users
 
 Priviligier le port de service_gateway <br><br>
 
-##Projet réalisé par :
+## Projet réalisé par :
 
-**Damien WELFRINGER**
-**Yanis REZGUI**
-**Alban KUNTZ**
-**Damien JUND**
-**Guillaume TURLAN**
+- **Damien WELFRINGER**
+- **Yanis REZGUI**
+- **Alban KUNTZ**
+- **Damien JUND**
+- **Guillaume TURLAN**
 
 - _Mail_ : damien.welfringer@gmail.com
 - _Github_ : Skyrolight
