@@ -4,7 +4,7 @@ const axios = require('axios')
 
 // **** Gateway of service_Events/commentaire.js ****
 
-// get all comments
+//get all comments
 router.route('/')
     .get(async (req, res, next) => {
         try {
@@ -13,7 +13,7 @@ router.route('/')
         } catch (error) {
             res.json(error)
         }
-}); 
+});
 
 // create a comment
 router.route('/create')

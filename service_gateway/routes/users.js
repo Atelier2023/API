@@ -15,6 +15,17 @@ router.route('/')
         }
 }); 
 
+//check mail
+router.route('/checkMail/')
+    .post(async (req, res, next) => {
+        try {
+            const response = await axios.get('http://service_Users:3000/users/checkMail/');
+            res.json(response.data);
+        } catch (error) {
+            res.json(error)
+        }
+});
+
 // create user
 router.route('/create')
     .post(async (req, res, next) => {
@@ -85,5 +96,17 @@ router.route('/getRefresh/:id')
             res.json(error)
         }
 }); 
+
+// get user by id
+router.route('/getUser/:id_user')
+    .get(async (req, res, next) => {
+        try {
+            const response = await axios.get('http://service_Users:3000/users/getUser/' + req.params.id_user);
+            res.json(response.data);
+        } catch (error) {
+            res.json(error)
+        }
+});
+
 
 module.exports = router;
