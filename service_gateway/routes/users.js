@@ -50,10 +50,7 @@ router.route('/create')
 router.route('/signin')
     .post(async (req, res, next) => {
         try {
-            const response = await axios.post('http://service_Users:3000/users/signin', {
-                email: req.body.email,
-                password: req.body.password
-            });
+            const response = await axios.post('http://service_Users:3000/users/signin', { }, { headers: { 'Authorization': req.headers.authorization } });
 
             res.json(response.data);
         } catch (error) {
@@ -65,7 +62,7 @@ router.route('/signin')
 router.route('/validate')
     .get(async (req, res, next) => {
         try {
-            const response = await axios.get('http://service_Users:3000/users/validate');
+            const response = await axios.get('http://service_Users:3000/users/validate', { headers: { 'Authorization': req.headers.authorization } });
             res.json(response.data);
         } catch (error) {
             res.json(error)
@@ -76,10 +73,7 @@ router.route('/validate')
 router.route('/refresh')
     .post(async (req, res, next) => {
         try {
-            const response = await axios.post('http://service_Users:3000/users/refresh', {
-                authorization: req.headers.authorization
-            });
-
+            const response = await axios.post('http://service_Users:3000/users/refresh', { }, { headers: { 'Authorization': req.headers.authorization } });
             res.json(response.data);
         } catch (error) {
             res.json(error)
