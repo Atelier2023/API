@@ -251,19 +251,20 @@ router.route('/shared/:shared_url')
     });
 
 // get shared url by email user
-router.route('/shared/email/:email')
-    .get(async (req, res, next) => {
+router.route('/shared/email')
+    .post(async (req, res, next) => {
+        console.log(req.body.email)
         try {
             const participants = await db('Participant')
-                .where('email', req.params.email)
+                .where('email', req.body.email)
                 .select()
                 .first();
 
-            if (!events) {
+            if (!participants) {
                 res.status(404).json({
                     "type": "error",
                     "error": 404,
-                    "message": "ressource non disponible : /event/shared/email/" + req.params.email
+                    "message": "ressource non disponible : /event/shared/email/" + req.body.email
                 });
             } else {
                 const result = await db('Event')

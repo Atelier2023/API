@@ -62,6 +62,25 @@ router.route('/create')
         }
     });
 
+//create participant for email
+router.route('/create/email')
+    .post(async (req, res, next) => {
+        try {
+            await db('Participant').insert({
+                email: req.body.email,
+                id_event: req.body.id_event,
+            });
+
+            res.status(201).json('participant ajouté');
+        } catch (error) {
+            res.status(500).json({
+                "type": "error",
+                "error": 500,
+                "message": error
+            })
+        }
+    });
+
 //get all event for a participant
 router.route('/:id_participant')
     .get(async (req, res, next) => {
