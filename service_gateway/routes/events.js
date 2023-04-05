@@ -42,6 +42,17 @@ router.route('/:id_event')
         }
 }); 
 
+//get all event by user
+router.route('/getEvent/:id_user')
+    .get(async (req, res, next) => {
+        try {
+            const response = await axios.get('http://service_Events:3000/events/getEvent/' + req.params.id_user);
+            res.json(response.data);
+        } catch (error) {
+            res.json(error)
+        }
+}); 
+
 // delete event by id
 router.route('/delete/:id_event')
     .delete(async (req, res, next) => {

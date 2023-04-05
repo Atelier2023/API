@@ -25,7 +25,7 @@ CREATE TABLE `Participant` (
     `email` varchar(128),
     `tel_number` varchar(12),
     `comment` varchar(256),
-    `state` enum('present', 'missing', 'not_answered') DEFAULT 'not_answered' NOT NULL,
+    `state` enum('vient', 'ne vient pas', 'n'as pas répondu') DEFAULT 'n'as pas répondu' NOT NULL,
     `id_event` int(11) NOT NULL,
     FOREIGN KEY (`id_event`) REFERENCES Event(id_event),
     PRIMARY KEY (`id_participant`)
