@@ -219,7 +219,7 @@ router.route('/shared/:shared_url')
                 res.status(404).json({
                     "type": "error",
                     "error": 404,
-                    "message": "ressource non disponible : /event/" + req.params.shared_url
+                    "message": "ressource non disponible : /event/shared/" + req.params.shared_url
                 });
             } else {
                 const participants = await db('Participant')
@@ -239,6 +239,37 @@ router.route('/shared/:shared_url')
                     "shared_url": events.shared_url
                 }
 
+                res.status(200).json(result);
+            }
+        } catch (error) {
+            res.json({
+                "type": "error",
+                "error": 500,
+                "message": "Erreur interne du serveur"
+            });
+        }
+    });
+
+// get shared url by email user
+router.route('/shared/email/:email')
+    .get(async (req, res, next) => {
+        try {
+            const participants = await db('Participant')
+                .where('email', req.params.email)
+                .select()
+                .first();
+
+            if (!events) {
+                res.status(404).json({
+                    "type": "error",
+                    "error": 404,
+                    "message": "ressource non disponible : /event/shared/email/" + req.params.email
+                });
+            } else {
+                const result = await db('Event')
+                    .where('id_event', participants.id_event)
+                    .select();
+                    
                 res.status(200).json(result);
             }
         } catch (error) {

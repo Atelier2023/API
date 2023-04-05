@@ -20,9 +20,10 @@ CREATE TABLE `Event` (
 DROP TABLE IF EXISTS `Participant`;
 CREATE TABLE `Participant` (
     `id_participant` int(11) NOT NULL AUTO_INCREMENT,
-    `name` varchar(128) NOT NULL,
-    `firstname` varchar(128) NOT NULL,
-    `tel_number` varchar(12) NOT NULL,
+    `name` varchar(128),
+    `firstname` varchar(128),
+    `email` varchar(128),
+    `tel_number` varchar(12),
     `address` varchar(256),
     `state` enum('present', 'missing', 'not_answered') DEFAULT 'not_answered' NOT NULL,
     `id_event` int(11) NOT NULL,
