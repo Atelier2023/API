@@ -41,19 +41,3 @@ CREATE TABLE `Commentaire` (
     PRIMARY KEY (`id_commentaire`),
     FOREIGN KEY (`id_event`) REFERENCES Event(id_event)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
-INSERT INTO Event (date_event, title, address, is_before, is_after, state, id_user) VALUES
-('2023-04-01 15:00:00', 'Giga fête', '789 Oak St, Anytown USA', true, false, 'terminé', 1),
-('2023-04-02 10:00:00', 'OE OE OE', '456 Elm St, Anytown USA', false, true, 'arrive', 2),
-('2023-04-03 18:00:00', 'Pourquoi pas', '123 Main St, Anytown USA', false, false, 'en cours', 1);
-
-INSERT INTO Participant (name, firstname, email, tel_number, comment, state, id_event) VALUES
-('Doe', 'John', 'doeJ@gmail.com', '0123456789', 'jai hate', 'présent', 1),
-('Doe', 'Jane', 'doeJane@hotmail.com', '0987654321', 'je peux pas jai poney', 'ne_vient_pas', 2),
-('Smith', 'Jack', 'smt@kebab.com', '5555555555', 'je ne sais pas encore', 'n\'as pas répondu', 3),
-('Doe', 'Joe', 'Doe.Joe@gmal.com', '1111111111', 'vivement la soirée', 'vient', 3);
-
-INSERT INTO Commentaire (commentaire, id_user, id_event, date) VALUES
-("Great event, thanks for having me!", 1, 1, '2023-04-01 16:30:00'),
-("Looking forward to tomorrow!", 2, 2, '2023-04-01 10:00:00'),
-("Can't make it tonight, sorry!", 1, 3, '2023-04-03 17:30:00');

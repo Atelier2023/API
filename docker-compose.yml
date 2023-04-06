@@ -18,8 +18,8 @@ services:
     working_dir: /app
     env_file:
       - ./event.env
-    command: bash -c 'npm i && npm start' #for npm modules installation inside container without hot reloading in dev environment
-    # command: bash -c 'npm i && npm run dev' #for npm modules installation inside container and hot reloading in dev environment (works only if nodemon is already installed in container)
+    # command: bash -c 'npm i && npm start' #for npm modules installation inside container without hot reloading in dev environment
+    command: bash -c 'npm i && npm run dev' #for npm modules installation inside container and hot reloading in dev environment (works only if nodemon is already installed in container)
     #command: npm start #for production environment
     #restart: unless-stopped #to activate in production environment
     networks:
@@ -37,8 +37,8 @@ services:
     working_dir: /app
     env_file:
       - ./usr.env
-    command: bash -c 'npm i && npm start' #for npm modules installation inside container without hot reloading in dev environment
-    # command: bash -c 'npm i && npm run dev' #for npm modules installation inside container and hot reloading in dev environment (works only if nodemon is already installed in container)
+    # command: bash -c 'npm i && npm start' #for npm modules installation inside container without hot reloading in dev environment
+    command: bash -c 'npm i && npm run dev' #for npm modules installation inside container and hot reloading in dev environment (works only if nodemon is already installed in container)
     #command: npm start #for production environment
     #restart: unless-stopped #to activate in production environment
     networks:
@@ -54,8 +54,8 @@ services:
     volumes:
       - ./service_gateway:/app
     working_dir: /app
-    command: bash -c 'npm i && npm start' #for npm modules installation inside container without hot reloading in dev environment
-    # command: bash -c 'npm i && npm run dev' #for npm modules installation inside container and hot reloading in dev environment (works only if nodemon is already installed in container)
+    # command: bash -c 'npm i && npm start' #for npm modules installation inside container without hot reloading in dev environment
+    command: bash -c 'npm i && npm run dev' #for npm modules installation inside container and hot reloading in dev environment (works only if nodemon is already installed in container)
     #command: npm start #for production environment
     #restart: unless-stopped #to activate in production environment
     # env_file:
